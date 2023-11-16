@@ -1,1 +1,3 @@
 # AltBot
+
+Using Masto API
