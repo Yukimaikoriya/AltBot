@@ -1,19 +1,19 @@
+require('dotenv').config();
 const Mastodon = require('mastodon-api');
-const ENV = require("dotenv");
-ENV.config();
+const fs = require("fs")
 
-console.log("Bot Started");
+console.log("Text Bot Started");
 
 const M = new Mastodon({
-  client_key: env.CLIENt_KEY,
-  client_secret: env.CLIENT_SECRET,
-  access_token: env.ACCESS_TOKEN,
-  timeout_ms: 60 * 1000,
-  api_url: "https://mastodon.social/api/v1/",
-});
+    client_key: '',
+    client_secret: '',
+    access_token: '',
+    timeout_ms: 60 * 1000,
+    api_url: "https://mastodon.social/api/v1/",
+  });
 
 const params = {
-    status: "Test Message-1"
+    status: "Test Message-3"
 }
 
 M.post('statuses', params, (error, data) =>{
