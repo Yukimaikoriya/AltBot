@@ -10,7 +10,6 @@ const M = new Mastodon({
   timeout_ms: 60 * 1000,
   api_url: "https://mastodon.social/api/v1/",
 });
-
 const getImageList = async () => {
     var imageList = [];
   
@@ -37,4 +36,4 @@ const getImageList = async () => {
     }
   };
   
-  module.exports = getImageList;
+module.exports = getImageList;
