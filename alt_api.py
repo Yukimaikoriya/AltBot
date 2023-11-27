@@ -6,9 +6,11 @@ import io
 app = Flask(__name__)
 image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
 
+
 @app.route("/", methods=["GET"])
 def index():
     return "home"
+
 
 @app.route("/api_endpoint", methods=["POST"])
 def function_for_api():
@@ -17,20 +19,23 @@ def function_for_api():
     print(request)
     print(request.files)
 
-    if 'file' not in request.files:
-        return jsonify({'error': 'No file provided'})
+    if "file" not in request.files:
+        return jsonify({"error": "No file provided"})
 
-    img = request.files['file']
+    img = request.files["file"]
     print(img.filename)
 
     # Check if the file is empty
-    if img.filename == '':
-        return jsonify({'error': 'No file selected'})
+    if img.filename == "":
+        return jsonify({"error": "No file selected"})
 
     # Check if the file is an allowed format (you can customize this based on your needs)
-    allowed_extensions = {'png', 'jpg', 'jpeg', 'gif'}
-    if '.' not in img.filename or img.filename.rsplit('.', 1)[1].lower() not in allowed_extensions:
-        return jsonify({'error': 'Invalid file format'})
+    allowed_extensions = {"png", "jpg", "jpeg", "gif"}
+    if (
+        "." not in img.filename
+        or img.filename.rsplit(".", 1)[1].lower() not in allowed_extensions
+    ):
+        return jsonify({"error": "Invalid file format"})
 
     # Read the image and convert it to bytes
     image_bytes = img.read()
@@ -44,10 +49,11 @@ def function_for_api():
         result = image_to_text(image)
         print(f"Result: {result}")
         # Return the result as JSON response
-        return jsonify({'result': result[0]['generated_text']})
+        return jsonify({"result": result[0]["generated_text"]})
 
     except Exception as e:
-        return jsonify({'error': f'Error processing image: {str(e)}'})
+        return jsonify({"error": f"Error processing image: {str(e)}"})
+
 
 if __name__ == "__main__":
     app.run(debug=True)

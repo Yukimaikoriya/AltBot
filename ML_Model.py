@@ -1,5 +1,6 @@
 import sys
 
+
 def main():
     script_name = sys.argv[0]
 
@@ -7,9 +8,10 @@ def main():
 
     print(f"Script Name: {script_name}")
     # print("Arguments:", arguments)
-    
+
     for i in range(int(arguments[1])):
         print(arguments[0])
+
 
 if __name__ == "__main__":
     main()

@@ -3,9 +3,9 @@ const fs = require('fs')
 const client = require('https')
 
 getDataFromDatabase()
-  .then((read_data) => {
-    read_data.forEach(({ image_id, image_url, flag }) => {
-      downloadImage(image_url, `OutputImages/${image_id}.png`)
+  .then((readData) => {
+    readData.forEach(({ imageId, imageUrl, flag }) => {
+      downloadImage(image_url, `OutputImages/${imageId}.png`)
         .then(console.log)
         .catch(console.error)
     })
