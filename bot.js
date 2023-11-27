@@ -1,6 +1,6 @@
 require('dotenv').config()
 const Mastodon = require('mastodon-api')
-const fs = require('fs')
+// const fs = require('fs')
 
 console.log('Text Bot Started')
 

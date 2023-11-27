@@ -10,7 +10,7 @@ const con = mysql.createConnection({
   database: 'altbot_test_database'
 })
 
-let read_data
+// let read_data
 
 // con.connect(function(err) {
 //     if (err) throw err;

@@ -5,7 +5,7 @@ const client = require('https')
 getDataFromDatabase()
   .then((readData) => {
     readData.forEach(({ imageId, imageUrl, flag }) => {
-      downloadImage(image_url, `OutputImages/${imageId}.png`)
+      downloadImage(imageUrl, `OutputImages/${imageId}.png`)
         .then(console.log)
         .catch(console.error)
     })
