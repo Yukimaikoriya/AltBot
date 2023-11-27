@@ -1,7 +1,8 @@
-from flask import Flask, request, jsonify
-from transformers import pipeline
-from PIL import Image
 import io
+
+from flask import Flask, request, jsonify
+from PIL import Image
+from transformers import pipeline
 
 app = Flask(__name__)
 image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
