@@ -1,5 +1,6 @@
 import io
 
+
 from flask import Flask, request, jsonify
 from PIL import Image
 from transformers import pipeline
