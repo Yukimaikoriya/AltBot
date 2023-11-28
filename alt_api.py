@@ -18,14 +18,14 @@ def index():
 def function_for_api():
     # Check if the POST request contains a file
 
-    print(request)
-    print(request.files)
+    # print(request)
+    # print(request.files)
 
     if "file" not in request.files:
         return jsonify({"error": "No file provided"})
 
     img = request.files["file"]
-    print(img.filename)
+    # print(img.filename)
 
     # Check if the file is empty
     if img.filename == "":
