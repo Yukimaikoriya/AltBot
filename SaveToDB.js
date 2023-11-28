@@ -23,6 +23,7 @@ getImageList()
       imageList.forEach(({ imageUrl, imageId }) => {
         const flag = 0
         const sql = `INSERT INTO Images (image_id, image_url, flag) VALUES ('${imageId}', '${imageUrl}' , '${flag}')`
+        // Major security vulnerability need fixing: Please use parameterized query
         con.query(sql, function (err, result) {
           if (err) throw err
           console.log('1 record inserted')
