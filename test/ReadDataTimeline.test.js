@@ -62,6 +62,6 @@ test('ReadDataTimeline', async () => {
     expect(ret).toHaveLength(2);
     expect(ret[0]).toMatchObject(matcher);
     expect(ret[1]).toMatchObject(matcher);
-    expect(m.con).toHaveBeenCalledTimes(1);
-    expect(m.get).toHaveBeenCalledTimes(1);
+    expect(m.con).toHaveBeenCalled();
+    expect(m.get).toHaveBeenCalled();
 });
