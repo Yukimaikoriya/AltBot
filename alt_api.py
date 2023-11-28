@@ -31,14 +31,6 @@ def function_for_api():
     if img.filename == "":
         return jsonify({"error": "No file selected"})
 
-    # Check if the file is an allowed format (you can customize this based on your needs)
-    allowed_extensions = {"png", "jpg", "jpeg", "gif"}
-    if (
-        "." not in img.filename
-        or img.filename.rsplit(".", 1)[1].lower() not in allowed_extensions
-    ):
-        return jsonify({"error": "Invalid file format"})
-
     # Read the image and convert it to bytes
     image_bytes = img.read()
     img.close()
@@ -49,9 +41,9 @@ def function_for_api():
 
         # Use the Hugging Face pipeline to get text from the image
         result = image_to_text(image)
-        print(f"Result: {result}")
+        # print(f"Result: {result}")
         # Return the result as JSON response
-        return jsonify({"result": result[0]["generated_text"]})
+        return jsonify({"alt_tag": result[0]["generated_text"]})
 
     except Exception as e:
         return jsonify({"error": f"Error processing image: {str(e)}"})

@@ -30,6 +30,7 @@ const getImageList = async () => {
         
       }
     }
+    console.log(imageList)
     return imageList
   } catch (error) {
     console.error('Error fetching home timeline:', error)
