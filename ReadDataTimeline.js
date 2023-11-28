@@ -8,8 +8,9 @@ const M = new Mastodon({
   client_secret: '',
   access_token: '',
   timeout_ms: 60 * 1000,
-  api_url: 'https://mastodon.social/api/v1/'
-})
+  api_url: "https://mastodon.social/api/v1/",
+});
+
 const getImageList = async () => {
   const imageList = []
 
@@ -19,21 +20,22 @@ const getImageList = async () => {
       for (let i = 0; i < resp.data.length; i++) {
         const toot = resp.data[i]
         if (toot.media_attachments.length !== 0) {
-          toot.media_attachments.map((val, index) => {
+          toot.media_attachments.forEach((val, index) => {
             if (val.description != null) {
-              const imageUrl = val.url
-              const imageId = val.id
-              imageList.push({ imageUrl: imageUrl, imageId: imageId })
+              const { url: imageUrl, id: imageId } = val; // Using object destructuring
+              imageList.push({ imageUrl, imageId }); // Using property shorthand
             }
-          })
+          });
         }
+        
       }
     }
+    console.log(imageList)
     return imageList
   } catch (error) {
     console.error('Error fetching home timeline:', error)
     throw error
   }
 }
-
+getImageList()
 module.exports = getImageList
