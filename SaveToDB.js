@@ -23,6 +23,8 @@ getImageList()
       imageList.forEach(({ imageUrl, imageId }) => {
         const flag = 0
         const sql = `INSERT INTO Images (image_id, image_url, flag) VALUES ('${imageId}', '${imageUrl}' , '${flag}')`
+        // Major security vulnerability need fixing: 
+        // Please use parameterized query to avoid injection
         con.query(sql, function (err, result) {
           if (err) throw err
           console.log('1 record inserted')
@@ -42,3 +44,5 @@ getImageList()
   .catch(error => {
     console.error('Error in database.js:', error)
   })
+
+  // minor bug: should end the connection even if query failed

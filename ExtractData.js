@@ -48,7 +48,7 @@ async function getDataFromDatabase () {
   } catch (error) {
     console.error('Error:', error)
     throw error
-  }
+  } // Minor bug: does not end the connection if error occured
 }
 
 module.exports = getDataFromDatabase

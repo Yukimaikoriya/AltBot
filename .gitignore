@@ -4,3 +4,4 @@ package-lock.json
 package.json
 try.js
 .DS_Store
+coverage
