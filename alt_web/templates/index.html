@@ -1,29 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Image Upload</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
 </head>
+
 <body>
-    <h1>ALT Tag Generator</h1>
-    <form id="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-        <input type="file" name="file" id="file-input" accept="image/*">
-        <button type="button" id="upload-button">Upload</button>
-    </form>
-    <div id="result"></div>
-    <img src="" alt="Selected Image" id="selected-image" style="display: none; max-width: 100%; max-height: 300px;">
+    <header>
+        <h1>ALT Tag Generator</h1>
+    </header>
+    <main>
+        <form id="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
+            <input type="file" name="file" id="file-input" accept="image/*">
+            <button type="button" id="upload-button">Upload</button>
+            <figure>
+                <img src="" alt="Selected Image" id="selected-image"
+                style="display: none; max-width: 100%; max-height: 300px;">
+            </figure>
+        </form>
+        <div id="result">
+        </div>
+    </main>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
             // Handle file input change event
-            $("#file-input").change(function() {
+            $("#file-input").change(function () {
                 // Display the selected image
                 readURL(this);
             });
 
-            $("#upload-button").click(function() {
+            $("#upload-button").click(function () {
                 var formData = new FormData($('#upload-form')[0]);
 
                 $.ajax({
@@ -32,12 +43,12 @@
                     data: formData,
                     contentType: false,
                     processData: false,
-                    success: function(data) {
+                    success: function (data) {
                         data = JSON.stringify(data.result);
                         var jsonObject = JSON.parse(data);
                         $("#result").html(jsonObject.alt_tag);
                     },
-                    error: function(error) {
+                    error: function (error) {
                         console.log(error);
                     }
                 });
@@ -48,7 +59,7 @@
                 if (input.files && input.files[0]) {
                     var reader = new FileReader();
 
-                    reader.onload = function(e) {
+                    reader.onload = function (e) {
                         $("#selected-image").attr("src", e.target.result);
                         $("#selected-image").show();
                     };
@@ -59,4 +70,5 @@
         });
     </script>
 </body>
+
 </html>
