@@ -1,10 +1,13 @@
+import base64
 import io
+
 from flask import Flask, request, jsonify
 from PIL import Image
 from transformers import pipeline
-import base64
+
 app = Flask(__name__)
-image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
+image_to_text = pipeline("image-to-text",
+                         model="nlpconnect/vit-gpt2-image-captioning")
 
 
 @app.route("/", methods=["GET"])
@@ -16,7 +19,7 @@ def index():
 def function_for_api():
     try:
         file_data = request.json.get("file")
-        
+
         if not file_data:
             return jsonify({"error": "No file provided"})
 
@@ -34,6 +37,7 @@ def function_for_api():
 
     except Exception as e:
         return jsonify({"error": f"Error processing image: {str(e)}"})
-    
+
+
 if __name__ == "__main__":
     app.run(debug=True)
