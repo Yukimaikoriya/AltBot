@@ -76,7 +76,53 @@ Discussions centered on the seamless integration of AltBotService with ALTTagMLS
 #### Project Timeline and Milestones
 The team reviewed the project timeline and discussed that we are on the right track.
 
-## Meeting 4: November 25th, 2023
+---
+
+## Meeting 4: November 17th, 2023
+
+### Participants
+- Shreyas
+- Niraj
+- Jash
+- Jay
+
+### Agenda
+1. **Updating Database**
+2. **Functionality to Unsubscribe to the Bot**
+
+### Meeting Details
+
+#### Updating Database
+The team discussed the necessity and strategy for updating the database within the AltBot system. Conversations centered around optimizing data storage and ensuring efficiency.
+
+#### Functionality to Unsubscribe to the Bot
+Discussions revolved around implementing a user-friendly feature to allow users to unsubscribe from the AltBot service.
+
+---
+
+## Meeting Notes 5 - November 21th, 2023
+
+### Participants
+- Onkar
+- Jay
+- Eddie
+- Niraj
+
+### Agenda
+1. **Replying to the Specific Post from Image Extraction**
+2. **Tracking and Storing Image Source Information**
+
+### Meeting Details
+
+#### Replying to the Specific Post from Image Extraction
+Conversations focused on the technical aspects of allowing the AltBot to reply to the specific post from where an image was extracted. 
+
+#### Tracking and Storing Image Source Information
+The team discussed tracking and storing information related to the source of the images. 
+
+---
+
+## Meeting 6: November 25th, 2023
 
 ### Participants
 
@@ -98,7 +144,7 @@ Jash and Niraj were working on debugging database problems to check whether some
 #### Working on the video check-in
 Niraj and Shreyas discussed the video check in and their deadline.
 
-## Meeting 5: November 29th, 2023
+## Meeting 7: November 29th, 2023
 
 ### Participants
 
