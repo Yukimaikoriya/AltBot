@@ -6,22 +6,46 @@
 <p class="has-line-data" data-line-start="7" data-line-end="8">The project employs the best software engineering practices recommended by David Farley in his book Modern Software Engineering. Our code uses continuous integration to ensure consistent code quality and early detection of conflicts or issues. The code is appropriately modularized, with concerns separated and exhibiting good cohesion. The project opted not to utilize Test-Driven Development to accommodate the brief development period and the team’s inexperience with TDD.</p>
 
 
+## Folder Structure
+
+- ALTTagMLService  (Web GUI for AltBot)
+    - templates
+        -  index.html
+    - app.py
+
+- AltBotService (Mastadon Bot)
+    - Images
+    - OutputImages
+    - Docs
+    - test
+        - DownloadImages.test.js
+        - ExtractData.test.js
+        - README.md
+        - ReadDataTimeline.test.js
+        - SaveToDB.test.js
+        - UploadImage.test.js
+    - .gitignore
+    - DownloadImages.js
+    - ExtractData.js
+    - ReadDataTimeline.js
+    - SaveToDB.js
+    - UploadImage.js
+    - jest.config.js
+    - main.sh
+    - package-lock.json
+    - package.json
+- Experiment (Standalone Prototypes/Experiementations)
+    - ML_Model.py
+    - Run_ML_Model.js
+    - alt_api.py
+    - alt_api_invoke.py
+    - bot.js
+
+
+
 ## Instructions to Run
 
-Using Masto API  
-  
-Commands:  
-node SaveToDB.js  
-node DownloadImages.js  
-node UploadImage.js  
-  
-Create MySQl table with name Images and column names: image_id, image_url, flag before running the code.
+Each folder's readme explains their respective steps to run.
 
-To run unit tests: (need Node.js & npm)
-```text
-$ cd AltBotService
-$ npm ci
-$ npm test
-```
-Unit Test Coverage:
-![Screenshot of unit test result](Experiment/unit-test-coverage.png)
+
+#### A project by: Shreyas, Niraj, Onkar, Jash, Jay, Eddie, Andrew, Xuanyu
