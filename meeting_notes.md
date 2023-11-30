@@ -1,46 +1,79 @@
-# Meeting Notes - 10/28
+# AltBot Project Meeting Notes
 
-## Participants
-- Jay
-- Andrew
+## Meeting 1: November 5th, 2023
 
-## Agenda
-- Task 2 Discussion
-- Improving Lighthouse Score for the Front Page
-
-## Meeting Details
-
-### Task 2 Discussion
-Jay and Andrew met to discuss progress on Task 2.
-
-### Improving Lighthouse Score
-- Jay worked on resizing and compressing images to improve website performance.
-- Andrew focused on identifying and removing unused CSS code from the repository.
-
-These actions were taken to increase the Lighthouse score of the front page.
-
-
-# Meeting Notes - 10/30/2023
-
-## Participants
-- Andrew
-- Jay
+### Participants
+- Shreyas
+- Niraj
 - Jash
+- Onkar
+- Andrew
+- Xuanyu
 
-## Agenda
-- Hosting Status
-- CSS Display Errors
-- SEO Score Improvement
+### Agenda
+1. **AltBot Project Overview**
+2. **Progress Review on ALTTagMLService**
+3. **Discussion on Integrating Image Recognition**
 
-## Meeting Details
+### Meeting Details
 
-### Hosting Status (Andrew)
-- Andrew reported that the website is now hosted on Netlify. He provided the team with the new URL.
+#### AltBot Project Overview
+The team engaged in a detailed discussion about the AltBot project, underscoring its mission to enhance image accessibility within Mastodon. Conversations revolved around the fundamental importance of making Mastodon more inclusive for visually impaired users.
 
-### CSS Display Errors (Jay)
-- Jay discussed the CSS display errors he encountered and differences with the actual website. He also worked on fixing these issues.
+#### Progress Review on ALTTagMLService
+Shreyas offered an update on the progress made in developing ALTTagMLService. 
 
-### SEO Score Improvement (Jash)
-- Jash shared updates on efforts to improve the SEO score. This includes optimizing meta tags, improving page load speed, and enhancing content for better search engine visibility.
+#### Discussion on Integrating Image Recognition
+Led by Niraj and Jash, the discussion centered on integrating image recognition capabilities into the AltBot system. Various potential algorithms and approaches were explored to ensure robust and effective image interpretation for accessibility purposes.
 
-These actions were taken to enhance the website's performance and user experience.
+---
+
+## Meeting 2: November 7th, 2023
+
+### Participants
+- Onkar
+- Jay
+- Niraj
+- Shreyas
+
+### Agenda
+1. **Status Update: AltBotService**
+2. **Testing Procedures and Quality Assurance**
+
+### Meeting Details
+
+#### Status Update: AltBotService
+Onkar, Jay, and Shreyas provided an overview of the progress made on AltBotService, highlighting milestones achieved especially with alt text generation.
+
+#### Testing Procedures and Quality Assurance
+The team conducted discussions on testing methodologies to ensure reliability and functionality for the AltBotService.
+
+---
+
+## Meeting 3: November 10th, 2023
+
+### Participants
+- Andrew
+- Xuanyu
+- Shreyas
+- Jash
+- Niraj
+
+### Agenda
+1. **Finalizing ALTTagMLService Features**
+2. **Integration Plan for AltBotService and ALTTagMLService**
+3. **Project Timeline and Milestones**
+
+### Meeting Details
+
+#### Finalizing ALTTagMLService Features
+Andrew and Xuanyu presented proposed features for ALTTagMLService, seeking input from Shreyas and Jash for finalization.
+
+#### Integration Plan for AltBotService and ALTTagMLService
+Discussions centered on the seamless integration of AltBotService with ALTTagMLService, ensuring smooth functionality between the web GUI and the Mastodon Bot.
+
+#### Project Timeline and Milestones
+The team reviewed the project timeline and discussed that we are on the right track.
+
+
+
