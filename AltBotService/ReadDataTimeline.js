@@ -1,12 +1,26 @@
 const Mastodon = require("mastodon-api");
-// const fs = require('fs')
-// const ENV = require("dotenv");
-// ENV.config();
+const ENV = require("dotenv");
+const winston = require("winston");
+
+ENV.config();
+
+// Configure Winston logger
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "app.log" }),
+  ],
+});
 
 /**
  * Logs the start of the Read Timeline Bot.
  */
-console.log("Read Timeline Bot Started");
+logger.info("Read Timeline Bot Started");
 
 /**
  * Initializes and configures the Mastodon API client.
@@ -19,17 +33,17 @@ console.log("Read Timeline Bot Started");
  * @param {string} config.api_url - Base URL for the Mastodon API.
  */
 const M = new Mastodon({
-  client_key: 'A3ulj2cnqDLDPp9IgFFqNzDjsiQTxyoFZudSOH8JDHQ',
-  client_secret: 'cnrT89bsyzMRzUvOBABoc_lGW0PtEwkul6x0W-tLxOs',
-  access_token: 'KwImt6uz6GWDCUi4Rn2hpJgaMVx-b8JSiHxmwX_T21Y',
-  timeout_ms: 60 * 1000,
-  api_url: "https://mastodon.social/api/v1/",
+  client_key: process.env.CLIENT_KEY,
+  client_secret: process.env.CLIENT_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  timeout_ms: parseInt(process.env.TIMEOUT_MS, 10),
+  api_url: process.env.API_URL,
 });
 
 /**
  * Asynchronously retrieves a list of images from the home timeline
  * where the images have no existing descriptions.
- * 
+ *
  * @async
  * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects,
  * each containing 'imageUrl' and 'imageId' for images without descriptions.
@@ -40,11 +54,11 @@ const getImageList = async () => {
 
   try {
     const resp = await M.get("timelines/home", {});
+
     if (resp.data.length !== 0) {
-      for (let i = 0; i < resp.data.length; i++) {
-        const toot = resp.data[i];
+      for (const toot of resp.data) {
         if (toot.media_attachments.length !== 0) {
-          toot.media_attachments.forEach((val, index) => {
+          toot.media_attachments.forEach((val) => {
             if (val.description === null) {
               const { url: imageUrl, id: imageId } = val; // Using object destructuring
               imageList.push({ imageUrl, imageId }); // Using property shorthand
@@ -53,12 +67,23 @@ const getImageList = async () => {
         }
       }
     }
-    console.log(imageList);
+
     return imageList;
   } catch (error) {
-    console.error("Error fetching home timeline:", error);
+    logger.error("Error fetching home timeline:", error);
     throw error;
   }
 };
-getImageList();
+
+// Logging the start of the image list retrieval
+logger.info("Fetching image list from the home timeline...");
+
+getImageList()
+  .then((imageList) => {
+    logger.info("Image list fetched successfully:", imageList);
+  })
+  .catch((error) => {
+    logger.error("Error fetching image list:", error);
+  });
+
 module.exports = getImageList;
