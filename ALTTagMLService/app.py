@@ -2,7 +2,12 @@
 from flask import Flask, render_template, request, jsonify
 import requests
 import os
-
+import io
+from PIL import Image
+from transformers import pipeline
+import base64
+app = Flask(__name__)
+image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
 app = Flask(__name__)
 
 # Set the path to the folder where you want to save the uploaded images
@@ -41,6 +46,29 @@ def upload():
 
         # Return the API response as JSON
         return jsonify({'result': response.json()})
+    
+@app.route("/alt_model_endpoint", methods=["POST"])
+def function_for_api():
+    try:
+        file_data = request.json.get("file")
+        
+        if not file_data:
+            return jsonify({"error": "No file provided"})
+
+        # Convert base64-encoded file data to bytes
+        image_bytes = io.BytesIO(base64.b64decode(file_data))
+
+        # Convert bytes to Pillow Image object
+        image = Image.open(image_bytes)
+
+        # Use the Hugging Face pipeline to get text from the image
+        result = image_to_text(image)
+
+        # Return the result as JSON response
+        return jsonify({"alt_tag": result[0]["generated_text"]})
+
+    except Exception as e:
+        return jsonify({"error": f"Error processing image: {str(e)}"})
 
 # Run the Flask app
 if __name__ == '__main__':
