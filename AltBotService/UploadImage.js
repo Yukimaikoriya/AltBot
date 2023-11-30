@@ -5,6 +5,11 @@ const axios = require("axios");
 console.log("Image Bot Started");
 const ENV = require("dotenv");
 ENV.config();
+
+/**
+ * Initializes and configures the Mastodon API client.
+ * @type {Mastodon}
+ */
 const M = new Mastodon({
   client_key: process.env.CLIENT_KEY,
   client_secret: process.env.CLIENT_SECRET,
@@ -16,8 +21,13 @@ const M = new Mastodon({
 const ServerAddress = "http://127.0.0.1:5001";
 const folderPath = "./OutputImages/"; // Replace with your actual folder path
 
-// Read the files in the folder
-let alt_tag = [];
+//let alt_tag = [];
+
+/**
+ * Reads files from the specified folder and posts them to Mastodon.
+ * For each image file, it sends a request to an ML model endpoint to generate an ALT tag,
+ * then uploads the image to Mastodon with the generated ALT tag.
+ */
 fs.readdir(folderPath, (err, files) => {
   if (err) {
     console.error("Error reading folder:", err);
