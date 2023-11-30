@@ -1,6 +1,10 @@
 "use strict";
-// import { jest, test, expect } from "@jest/globals";
+/**
+ * @file Unit test for ReadDataTimeline.js
+ * @author Eddie
+ */
 
+// Mock return value from server
 const mock_ret_val = {
   data: [
     {
@@ -32,11 +36,13 @@ const mock_ret_val = {
   ],
 };
 
+// Expected result pattern
 const matcher = {
     imageUrl: expect.stringMatching(/test-url(1|3)/),
     imageId: expect.stringMatching(/test-id(1|3)/)
 }
 
+// Mock mastodon-api that returns `mock_ret_val` for `GET timelines/home`
 jest.mock("mastodon-api", () => {
   const con = jest.fn();
   const get = jest.fn((method) => {
@@ -55,13 +61,17 @@ jest.mock("mastodon-api", () => {
   return Mastodon;
 });
 
+// Main test
 test('ReadDataTimeline', async () => {
     const m = require('mastodon-api');
     const dut = require('../ReadDataTimeline');
+    // Call DUT
     const ret = await dut();
+    // should return 1 & 3
     expect(ret).toHaveLength(2);
     expect(ret[0]).toMatchObject(matcher);
     expect(ret[1]).toMatchObject(matcher);
+    // should construct a Mastodon object and call `get`
     expect(m.con).toHaveBeenCalled();
     expect(m.get).toHaveBeenCalled();
 });
