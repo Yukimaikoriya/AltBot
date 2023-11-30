@@ -2,7 +2,22 @@ const Mastodon = require("mastodon-api");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
-console.log("Image Bot Started");
+const winston = require("winston");
+
+// Configure Winston logger
+const logger = winston.createLogger({
+  level: "info",
+  format: winston.format.combine(
+    winston.format.timestamp(),
+    winston.format.json()
+  ),
+  transports: [
+    new winston.transports.Console(),
+    new winston.transports.File({ filename: "app.log" }),
+  ],
+});
+
+logger.info("Image Bot Started");
 
 const ENV = require("dotenv");
 ENV.config();
@@ -11,35 +26,34 @@ ENV.config();
  * Initializes and configures the Mastodon API client.
  * @type {Mastodon}
  */
-
 const M = new Mastodon({
-  client_key: '',
-  client_secret: '',
-  access_token: '',
-  timeout_ms: 60 * 1000,
-  api_url: "https://mastodon.social/api/v1/",
+  client_key: process.env.CLIENT_KEY,
+  client_secret: process.env.CLIENT_SECRET,
+  access_token: process.env.ACCESS_TOKEN,
+  timeout_ms: parseInt(process.env.TIMEOUT_MS, 10),
+  api_url: process.env.API_URL,
 });
 
-const ServerAddress = "http://127.0.0.1:5001";
-const folderPath = "./OutputImages/"; // Replace with your actual folder path
-
-//let alt_tag = [];
+const ServerAddress = process.env.SERVER_ADDRESS;
+const folderPath = process.env.FOLDER_PATH; // Replace with your actual folder path
 
 /**
  * Reads files from the specified folder and posts them to Mastodon.
  * For each image file, it sends a request to an ML model endpoint to generate an ALT tag,
  * then uploads the image to Mastodon with the generated ALT tag.
+ *
+ * @param {string} folderPath - The path to the folder containing image files.
  */
 fs.readdir(folderPath, (err, files) => {
   if (err) {
-    console.error("Error reading folder:", err);
+    logger.error("Error reading folder:", err);
     return;
   }
 
   files.forEach((file) => {
     const filePath = path.join(folderPath, file);
     if (fs.statSync(filePath).isFile() && /\.(jpg|jpeg|png|gif)$/i.test(file)) {
-      // Call ML model here to pass real description(ALT Tag), also after uploading is sucessfull, set the bool flag to 1
+      // Call ML model here to pass real description (ALT Tag), also after uploading is successful, set the bool flag to 1
       const fileData = fs.readFileSync(filePath, { encoding: "base64" });
       axios
         .post(`${ServerAddress}/alt_model_endpoint`, { file: fileData })
@@ -54,11 +68,11 @@ fs.readdir(folderPath, (err, files) => {
               M.post("statuses", { status: "#ALTBOT", media_ids: [id] });
             })
             .catch((uploadError) => {
-              console.error("Error uploading media:", uploadError);
+              logger.error("Error uploading media:", uploadError);
             });
         })
         .catch((error) => {
-          console.error("Error posting request:", error);
+          logger.error("Error posting request:", error);
         });
     }
   });
