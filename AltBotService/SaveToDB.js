@@ -7,10 +7,10 @@ const mysql = require("mysql2"); // Need to change
  * @type {mysql.Connection}
  */
 const con = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "altbot_test_database",
+  host: 'localhost',
+  user: 'root',
+  password: 'onkar123',
+  database: 'altbot_test_database',
 });
 
 // const url = 'https://www.youtube.com/results?search_query=mysql+js'
