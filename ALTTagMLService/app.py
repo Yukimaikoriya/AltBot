@@ -1,15 +1,17 @@
 # Import necessary libraries
 import base64
 import io
+import json
 
+import requests
 from flask import Flask, render_template, request, jsonify
 from PIL import Image
 from transformers import pipeline
-import requests
-import json
 
 app = Flask(__name__)
-image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
+image_to_text = pipeline("image-to-text",
+                         model="nlpconnect/vit-gpt2-image-captioning")
+
 
 # Endpoint for rendering the home page
 @app.route('/')
@@ -18,6 +20,7 @@ def index():
     Renders the home page.
     """
     return render_template('index.html')
+
 
 # Endpoint for handling image upload and API call
 @app.route('/upload', methods=['POST'])
@@ -31,7 +34,8 @@ def upload():
 
     file = request.files['file']
 
-    # If the user does not select a file, the browser submits an empty file without a filename
+    # If the user does not select a file,
+    # the browser submits an empty file without a filename
     if file.filename == '':
         return jsonify({'error': 'No selected file'})
 
@@ -41,7 +45,7 @@ def upload():
         file_data = file.read()
         file_data_base64 = base64.b64encode(file_data).decode('utf-8')
         payload = {
-            "file": file_data_base64  # "file" is the key pointing to the file data
+            "file": file_data_base64
         }
         json_payload = json.dumps(payload)
         headers = {'Content-Type': 'application/json'}
@@ -49,6 +53,7 @@ def upload():
 
         # Return the API response as JSON
         return jsonify({'result': response.json()})
+
 
 # Endpoint for hosting the ML model
 @app.route("/alt_model_endpoint", methods=["POST"])
@@ -58,7 +63,7 @@ def function_for_api():
     """
     try:
         file_data = request.json.get("file")
-        
+
         if not file_data:
             return jsonify({"error": "No file provided"})
 
@@ -76,6 +81,7 @@ def function_for_api():
 
     except Exception as e:
         return jsonify({"error": f"Error processing image: {str(e)}"})
+
 
 # Run the Flask app
 if __name__ == '__main__':

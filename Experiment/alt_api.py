@@ -1,8 +1,10 @@
+import base64
 import io
+
 from flask import Flask, request, jsonify
 from PIL import Image
 from transformers import pipeline
-import base64
+
 app = Flask(__name__)
 image_to_text = pipeline("image-to-text", model="nlpconnect/vit-gpt2-image-captioning")
 
@@ -34,6 +36,7 @@ def function_for_api():
 
     except Exception as e:
         return jsonify({"error": f"Error processing image: {str(e)}"})
+    
     
 if __name__ == "__main__":
     app.run(debug=True)
