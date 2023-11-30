@@ -3,8 +3,21 @@ const Mastodon = require("mastodon-api");
 const ENV = require("dotenv");
 ENV.config();
 
+/**
+ * Logs the start of the Read Timeline Bot.
+ */
 console.log("Read Timeline Bot Started");
 
+/**
+ * Initializes and configures the Mastodon API client.
+ * @type {Mastodon}
+ * @param {Object} config - The configuration object for Mastodon API.
+ * @param {string} config.client_key - Client Key obtained from Mastodon.
+ * @param {string} config.client_secret - Client Secret obtained from Mastodon.
+ * @param {string} config.access_token - Access Token for authenticating with the Mastodon API.
+ * @param {number} config.timeout_ms - Timeout for API requests in milliseconds.
+ * @param {string} config.api_url - Base URL for the Mastodon API.
+ */
 const M = new Mastodon({
   client_key: process.env.CLIENT_KEY,
   client_secret: process.env.CLIENT_SECRET,
@@ -13,6 +26,15 @@ const M = new Mastodon({
   api_url: "https://mastodon.social/api/v1/",
 });
 
+/**
+ * Asynchronously retrieves a list of images from the home timeline
+ * where the images have no existing descriptions.
+ * 
+ * @async
+ * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects,
+ * each containing 'imageUrl' and 'imageId' for images without descriptions.
+ * @throws {Error} Throws an error if fetching the home timeline fails.
+ */
 const getImageList = async () => {
   const imageList = [];
 
