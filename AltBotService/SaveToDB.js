@@ -7,7 +7,7 @@ const mysql = require("mysql2"); // Need to change
 const con = mysql.createConnection({
   host: "localhost",
   user: "root",
-  password: "jashboy06",
+  password: "",
   database: "altbot_test_database",
 });
 
