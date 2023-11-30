@@ -10,3 +10,10 @@ We are using python's flask environment to host this website.
 
 ### Step 2:
 `python app.py`
+
+
+
+## Sample output
+
+
+![Screenshot of web page](docs/sample.png)
