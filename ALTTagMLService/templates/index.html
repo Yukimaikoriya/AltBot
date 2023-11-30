@@ -11,21 +11,18 @@
       .output-container {
         border: 1px solid #ccc; /* Set the border style and color */
         padding: 10px; /* Add some padding for better appearance */
-        margin-top: 10px; 
-        margin-right: 10px; 
-        margin-bottom: 10px; 
-
+        margin-top: 10px;
+        margin-right: 10px;
+        margin-bottom: 10px;
         display: flex; /* Use flexbox to align items */
         align-items: center; /* Center items vertically */
       }
-
       /* Add styles for the label */
       .label {
         margin-right: 10px; /* Add some space between the label and the result */
       }
     </style>
   </head>
-
   <body>
     <header>
       <h1>ALT Tag Generator</h1>
@@ -53,7 +50,6 @@
         </div>
       </form>
     </main>
-
     <script>
       $(document).ready(function () {
         // Handle file input change event
@@ -61,10 +57,8 @@
           // Display the selected image
           readURL(this);
         });
-
         $("#upload-button").click(function () {
           var formData = new FormData($("#upload-form")[0]);
-
           $.ajax({
             type: "POST",
             url: "/upload",
@@ -81,17 +75,14 @@
             },
           });
         });
-
         // Function to display the selected image
         function readURL(input) {
           if (input.files && input.files[0]) {
             var reader = new FileReader();
-
             reader.onload = function (e) {
               $("#selected-image").attr("src", e.target.result);
               $("#selected-image").show();
             };
-
             reader.readAsDataURL(input.files[0]);
           }
         }
