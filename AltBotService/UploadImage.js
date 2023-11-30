@@ -3,12 +3,14 @@ const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
 console.log("Image Bot Started");
-const ENV = require("dotenv");
-ENV.config();
+// const ENV = require("dotenv");
+// ENV.config();
+
+
 const M = new Mastodon({
-  client_key: process.env.CLIENT_KEY,
-  client_secret: process.env.CLIENT_SECRET,
-  access_token: process.env.ACCESS_TOKEN,
+  client_key: 'A3ulj2cnqDLDPp9IgFFqNzDjsiQTxyoFZudSOH8JDHQ',
+  client_secret: 'cnrT89bsyzMRzUvOBABoc_lGW0PtEwkul6x0W-tLxOs',
+  access_token: 'KwImt6uz6GWDCUi4Rn2hpJgaMVx-b8JSiHxmwX_T21Y',
   timeout_ms: 60 * 1000,
   api_url: "https://mastodon.social/api/v1/",
 });
@@ -34,7 +36,7 @@ fs.readdir(folderPath, (err, files) => {
         .then((response) => {
           M.post("media", {
             file: fs.createReadStream(filePath),
-            description: JSON.stringify(response.data),
+            description: JSON.stringify(response.data.alt_tag),
           })
             .then((resp) => {
               const id = resp.data.id;
