@@ -1,14 +1,14 @@
-const mysql = require('mysql2') // Need to change
-const util = require('util')
+const mysql = require("mysql2"); // Need to change
+const util = require("util");
 
 // Create a MySQL connection
 
 const con = mysql.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'altbot_test_database'
-})
+  host: "localhost",
+  user: "root",
+  password: "jashboy06",
+  database: "altbot_test_database",
+});
 
 // let read_data
 
@@ -35,20 +35,19 @@ const con = mysql.createConnection({
 //     });
 // });
 
-const query = util.promisify(con.query).bind(con)
+const query = util.promisify(con.query).bind(con);
 
-async function getDataFromDatabase () {
+async function getDataFromDatabase() {
   try {
-    const sql = 'SELECT * FROM Images'
-    const result = await query(sql)
-
-    console.log('Data Read:')
-    con.end()
-    return result
+    const sql = "SELECT * FROM Images";
+    const result = await query(sql);
+    console.log("Data Read:");
+    con.end();
+    return result;
   } catch (error) {
-    console.error('Error:', error)
-    throw error
+    console.error("Error:", error);
+    throw error;
   }
 }
 
-module.exports = getDataFromDatabase
+module.exports = getDataFromDatabase;
