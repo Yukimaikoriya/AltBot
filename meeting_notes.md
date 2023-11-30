@@ -28,7 +28,7 @@ Led by Niraj and Jash, the discussion centered on integrating image recognition 
 
 ---
 
-## Meeting 2: November 7th, 2023
+## Meeting 2: November 10th, 2023
 
 ### Participants
 - Onkar
@@ -50,10 +50,11 @@ The team conducted discussions on testing methodologies to ensure reliability an
 
 ---
 
-## Meeting 3: November 10th, 2023
+## Meeting 3: November 15th, 2023
 
 ### Participants
-- Andrew
+
+- Onkar
 - Xuanyu
 - Shreyas
 - Jash
@@ -67,7 +68,7 @@ The team conducted discussions on testing methodologies to ensure reliability an
 ### Meeting Details
 
 #### Finalizing ALTTagMLService Features
-Andrew and Xuanyu presented proposed features for ALTTagMLService, seeking input from Shreyas and Jash for finalization.
+Onkar and Xuanyu presented proposed features for ALTTagMLService, seeking input from Shreyas and Jash for finalization.
 
 #### Integration Plan for AltBotService and ALTTagMLService
 Discussions centered on the seamless integration of AltBotService with ALTTagMLService, ensuring smooth functionality between the web GUI and the Mastodon Bot.
@@ -75,5 +76,51 @@ Discussions centered on the seamless integration of AltBotService with ALTTagMLS
 #### Project Timeline and Milestones
 The team reviewed the project timeline and discussed that we are on the right track.
 
+## Meeting 4: November 25th, 2023
+
+### Participants
+
+- Onkar
+- Shreyas
+- Jash
+- Niraj
+
+### Agenda
+1. **Debuggging DB problems**
+2. **Working on the video check-in**
+
+### Meeting Details
+
+#### Debuggging DB problems
+
+Jash and Niraj were working on debugging database problems to check whether some images are already present in the DB before generating some alt tags
+
+#### Working on the video check-in
+Niraj and Shreyas discussed the video check in and their deadline.
+
+## Meeting 5: November 29th, 2023
+
+### Participants
+
+- Onkar
+- Shreyas
+- Jash
+- Niraj
+- Eddie
+- Jay
+
+### Agenda
+1. **ReadMe for testing purposes**
+2. **Presentation preparation**
+
+### Meeting Details
+
+#### ReadMe for testing purposes
+
+Eddie showed his ReadMe for test so it shows how we can configure and run the tests
+
+#### Presentation Preparation
+
+Everyone else discussed what to prepare for the presentation that we need to present live. 
 
 
