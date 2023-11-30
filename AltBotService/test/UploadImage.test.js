@@ -44,14 +44,25 @@ jest.mock("fs", () => {
                 isFile: () => true
             }
         }),
-        createReadStream: jest.fn(a => a)
-    }
+        createReadStream: jest.fn(a => a),
+        readFileSync: jest.fn()
+    };
+});
+
+// Mock module axios that returns a dummy response for `post`
+jest.mock("axios", () => {
+  return {
+    post: jest.fn(async () => ({
+      data: {}
+    }))
+  };
 });
 
 // Main test starts here
 test('UploadImage', async () => {
     const fs = require('fs');
     const m = require('mastodon-api');
+    const axios = require('axios');
     // Call DUT
     const dut = require('../UploadImage');
     // the script does some async jobs. wait for it
@@ -62,6 +73,8 @@ test('UploadImage', async () => {
     expect(fs.statSync).toHaveBeenCalledTimes(3);
     // should call read 2 times, since there are only 2 images in `mock_files`
     expect(fs.createReadStream).toHaveBeenCalledTimes(2);
+    // should call axios.post 2 times
+    expect(axios.post).toHaveBeenCalledTimes(2);
     // should create 1 Mastodon object
     expect(m.con).toHaveBeenCalledTimes(1);
     // should post 2 statuses

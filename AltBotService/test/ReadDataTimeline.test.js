@@ -10,12 +10,12 @@ const mock_ret_val = {
     {
       media_attachments: [
         {
-          description: '1',
+          description: null,
           url: 'test-url1',
           id: 'test-id1'
         },
         {
-            description: null,
+            description: 'something',
             url: 'test-url2',
             id: 'test-id2'
         }
@@ -24,7 +24,7 @@ const mock_ret_val = {
     {
         media_attachments: [
             {
-                description: '1',
+                description: null,
                 url: 'test-url3',
                 id: 'test-id3'
             }
