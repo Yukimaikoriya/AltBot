@@ -1,11 +1,11 @@
 # Import necessary libraries
-from flask import Flask, render_template, request, jsonify
-import requests
-import os
+import base64
 import io
+
+from flask import Flask, render_template, request, jsonify
 from PIL import Image
 from transformers import pipeline
-import base64
+import requests
 import json
 
 app = Flask(__name__)
