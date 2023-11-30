@@ -33,7 +33,7 @@ getImageList()
         const flag = 0;
         const sql = `INSERT INTO Images (image_id, image_url, flag) VALUES ('${imageId}', '${imageUrl}' , '${flag}')`;
         con.query(sql, function (err, result) {
-          if (err) throw err;
+          if (err) {con.end(); throw err;}
           console.log("1 record inserted");
         });
       });

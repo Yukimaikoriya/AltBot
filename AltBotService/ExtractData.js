@@ -34,6 +34,7 @@ async function getDataFromDatabase() {
     return result;
   } catch (error) {
     console.error("Error:", error);
+    con.end();
     throw error;
   }
 }
