@@ -17,3 +17,11 @@ node UploadImage.js
   
 Create MySQl table with name Images and column names: image_id, image_url, flag before running the code.
 
+To run unit tests: (need Node.js & npm)
+```text
+$ cd AltBotService
+$ npm ci
+$ npm test
+```
+Unit Test Coverage:
+![Screenshot of unit test result](Experiment/unit-test-coverage.png)
