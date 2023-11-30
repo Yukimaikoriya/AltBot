@@ -1,74 +1,101 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Image Upload</title>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <link rel="stylesheet" href="https://unpkg.com/mvp.css">
-</head>
+    <link rel="stylesheet" href="https://unpkg.com/mvp.css" />
+    <style>
+      /* Add styles for the output container */
+      .output-container {
+        border: 1px solid #ccc; /* Set the border style and color */
+        padding: 10px; /* Add some padding for better appearance */
+        margin-top: 10px; 
+        margin-right: 10px; 
+        margin-bottom: 10px; 
 
-<body>
+        display: flex; /* Use flexbox to align items */
+        align-items: center; /* Center items vertically */
+      }
+
+      /* Add styles for the label */
+      .label {
+        margin-right: 10px; /* Add some space between the label and the result */
+      }
+    </style>
+  </head>
+
+  <body>
     <header>
-        <h1>ALT Tag Generator</h1>
+      <h1>ALT Tag Generator</h1>
     </header>
     <main>
-        <form id="upload-form" action="{{ url_for('upload') }}" method="post" enctype="multipart/form-data">
-            <input type="file" name="file" id="file-input" accept="image/*">
-            <button type="button" id="upload-button">Upload</button>
-            <figure>
-                <img src="" alt="Selected Image" id="selected-image"
-                style="display: none; max-width: 100%; max-height: 300px;">
-            </figure>
-        </form>
-        <div id="result">
+      <form
+        id="upload-form"
+        action="{{ url_for('upload') }}"
+        method="post"
+        enctype="multipart/form-data"
+      >
+        <input type="file" name="file" id="file-input" accept="image/*" />
+        <button type="button" id="upload-button">Upload</button>
+        <figure>
+          <img
+            src=""
+            alt="Selected Image"
+            id="selected-image"
+            style="display: none; max-width: 100%; max-height: 300px"
+          />
+        </figure>
+        <div class="output-container">
+          <div class="label"><strong>Alt tag:</strong></div>
+          <div id="result"></div>
         </div>
+      </form>
     </main>
 
     <script>
-        $(document).ready(function () {
-            // Handle file input change event
-            $("#file-input").change(function () {
-                // Display the selected image
-                readURL(this);
-            });
-
-            $("#upload-button").click(function () {
-                var formData = new FormData($('#upload-form')[0]);
-
-                $.ajax({
-                    type: 'POST',
-                    url: '/upload',
-                    data: formData,
-                    contentType: false,
-                    processData: false,
-                    success: function (data) {
-                        data = JSON.stringify(data.result);
-                        var jsonObject = JSON.parse(data);
-                        $("#result").html(jsonObject.alt_tag);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-            });
-
-            // Function to display the selected image
-            function readURL(input) {
-                if (input.files && input.files[0]) {
-                    var reader = new FileReader();
-
-                    reader.onload = function (e) {
-                        $("#selected-image").attr("src", e.target.result);
-                        $("#selected-image").show();
-                    };
-
-                    reader.readAsDataURL(input.files[0]);
-                }
-            }
+      $(document).ready(function () {
+        // Handle file input change event
+        $("#file-input").change(function () {
+          // Display the selected image
+          readURL(this);
         });
-    </script>
-</body>
 
+        $("#upload-button").click(function () {
+          var formData = new FormData($("#upload-form")[0]);
+
+          $.ajax({
+            type: "POST",
+            url: "/upload",
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (data) {
+              data = JSON.stringify(data.result);
+              var jsonObject = JSON.parse(data);
+              $("#result").html(jsonObject.alt_tag);
+            },
+            error: function (error) {
+              console.log(error);
+            },
+          });
+        });
+
+        // Function to display the selected image
+        function readURL(input) {
+          if (input.files && input.files[0]) {
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              $("#selected-image").attr("src", e.target.result);
+              $("#selected-image").show();
+            };
+
+            reader.readAsDataURL(input.files[0]);
+          }
+        }
+      });
+    </script>
+  </body>
 </html>
