@@ -22,9 +22,10 @@ The team engaged in a detailed discussion about the AltBot project, underscoring
 
 #### Progress Review on ALTTagMLService
 Shreyas offered an update on the progress made in developing ALTTagMLService. 
+Onkar & Jash created a template code for scrapping timeline, saving images to db, downloading images and uploading images.
 
 #### Discussion on Integrating Image Recognition
-Led by Niraj and Jash, the discussion centered on integrating image recognition capabilities into the AltBot system. Various potential algorithms and approaches were explored to ensure robust and effective image interpretation for accessibility purposes.
+Led by Niraj and Jay, the discussion centered on integrating image recognition capabilities into the AltBot system. Various potential algorithms and approaches were explored to ensure robust and effective image interpretation for accessibility purposes.
 
 ---
 
@@ -35,6 +36,7 @@ Led by Niraj and Jash, the discussion centered on integrating image recognition 
 - Jay
 - Niraj
 - Shreyas
+- Eddie
 
 ### Agenda
 1. **Status Update: AltBotService**
@@ -43,10 +45,10 @@ Led by Niraj and Jash, the discussion centered on integrating image recognition 
 ### Meeting Details
 
 #### Status Update: AltBotService
-Onkar, Jay, and Shreyas provided an overview of the progress made on AltBotService, highlighting milestones achieved especially with alt text generation.
+Onkar, Jash, and Shreyas provided an overview of the progress made on AltBotService, highlighting milestones achieved especially with alt text generation.
 
 #### Testing Procedures and Quality Assurance
-The team conducted discussions on testing methodologies to ensure reliability and functionality for the AltBotService.
+The team conducted discussions on testing methodologies to ensure reliability and functionality for the AltBotService. Eddie took the responsibility of writing testcases.
 
 ---
 
@@ -68,7 +70,7 @@ The team conducted discussions on testing methodologies to ensure reliability an
 ### Meeting Details
 
 #### Finalizing ALTTagMLService Features
-Onkar and Xuanyu presented proposed features for ALTTagMLService, seeking input from Shreyas and Jash for finalization.
+Jay, Niraj and Xuanyu presented proposed features for ALTTagMLService.
 
 #### Integration Plan for AltBotService and ALTTagMLService
 Discussions centered on the seamless integration of AltBotService with ALTTagMLService, ensuring smooth functionality between the web GUI and the Mastodon Bot.
@@ -82,6 +84,7 @@ The team reviewed the project timeline and discussed that we are on the right tr
 
 ### Participants
 - Shreyas
+- Onkar
 - Niraj
 - Jash
 - Jay
@@ -93,7 +96,7 @@ The team reviewed the project timeline and discussed that we are on the right tr
 ### Meeting Details
 
 #### Updating Database
-The team discussed the necessity and strategy for updating the database within the AltBot system. Conversations centered around optimizing data storage and ensuring efficiency.
+The team discussed the necessity and strategy for updating the database within the AltBot system. Conversations centered around optimizing data storage and ensuring efficiency. We finalised MySql as the database.
 
 #### Functionality to Unsubscribe to the Bot
 Discussions revolved around implementing a user-friendly feature to allow users to unsubscribe from the AltBot service.
@@ -139,10 +142,13 @@ The team discussed tracking and storing information related to the source of the
 
 #### Debuggging DB problems
 
-Jash and Niraj were working on debugging database problems to check whether some images are already present in the DB before generating some alt tags
+Jash and Onkar were working on debugging database problems to check whether some images are already present in the DB before generating some alt tags.
 
 #### Working on the video check-in
-Niraj and Shreyas discussed the video check in and their deadline.
+Onkar and Shreyas discussed the video check in and their deadline.
+
+#### Documentation
+Niraj & Jay discussed regarding what documentation should be done for proper understanding of the code. They started working on JS Docs.
 
 ## Meeting 7: November 29th, 2023
 
@@ -164,6 +170,9 @@ Niraj and Shreyas discussed the video check in and their deadline.
 #### ReadMe for testing purposes
 
 Eddie showed his ReadMe for test so it shows how we can configure and run the tests
+
+#### Documentation
+Niraj, Jay and Jash added JS documentation, along with Readme files, structured the project, and created requirements.txt file
 
 #### Presentation Preparation
 
