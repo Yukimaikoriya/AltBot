@@ -1,3 +1,4 @@
 .env
 try.js
 .DS_Store
+__pycache__
