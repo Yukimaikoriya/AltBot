@@ -14,8 +14,8 @@ Create MySQl table with name "**Images**" and column names: *image_id, image_url
 To directly start the running of the bot, you can execute the **main.sh** bash file.
 `./main.sh`
 
-[!NOTE]  
-Incase of error related to permission, make sure to give proper permission by executing `chmod +x main.sh`
+> [!NOTE]
+> Incase of error related to permission, make sure to give proper permission by executing `chmod +x main.sh`
 
 ### TODO ADD MORE STEPS
 of credentials, how to host?, how it runs?
