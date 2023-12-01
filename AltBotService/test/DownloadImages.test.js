@@ -15,6 +15,12 @@ jest.mock('../ExtractData', () => {
     return jest.fn(async () => {return testData;});
 });
 
+// Mock winston logger
+jest.mock('winston', () => require('./winston'));
+
+// Mock dotenv
+jest.mock('dotenv');
+
 // Mock https module. 
 // Return success 200 for test-url1, failure 404 otherwise
 jest.mock('https', () => {
@@ -60,6 +66,7 @@ test('DownloadImages', async () => {
     const ed = require('../ExtractData');
     const https = require('https');
     const fs = require('fs');
+    const logger = require('winston');
     // run the main script
     const dut = require('../DownloadImages');
     // the script does some async job so we must wait
@@ -72,4 +79,6 @@ test('DownloadImages', async () => {
     expect(fs.createWriteStream).toBeCalledWith('OutputImages/test-image1.png');
     // Should call 1 resume for 1 invalid url in testData
     expect(https.resume).toBeCalledTimes(1);
+    // Should report 1 error for 1 invalid url in testData
+    expect(logger._error).toBeCalledTimes(1);
 });

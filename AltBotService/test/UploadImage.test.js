@@ -58,6 +58,18 @@ jest.mock("axios", () => {
   };
 });
 
+// Mock logger without any function
+jest.mock("winston", () => {
+  return require('./winston');
+});
+
+// Mock path
+jest.mock("path");
+
+// Mock dotenv
+jest.mock("dotenv");
+
+
 // Main test starts here
 test('UploadImage', async () => {
     const fs = require('fs');

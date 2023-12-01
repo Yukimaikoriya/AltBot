@@ -61,6 +61,12 @@ jest.mock("mastodon-api", () => {
   return Mastodon;
 });
 
+// Mock winston logger
+jest.mock("winston", () => require('./winston'));
+
+// Mock dotenv
+jest.mock("dotenv");
+
 // Main test
 test('ReadDataTimeline', async () => {
     const m = require('mastodon-api');
