@@ -4,6 +4,8 @@ const winston = require("winston");
 
 ENV.config();
 
+/* global process */
+
 // Configure Winston logger
 const logger = winston.createLogger({
   level: "info",

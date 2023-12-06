@@ -4,6 +4,8 @@
  * @author Eddie
  */
 
+/* global jest, test, expect, beforeEach */
+
 // Mock success value
 const SUCCESS = {_: "An object"};
 

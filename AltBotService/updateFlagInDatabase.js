@@ -6,6 +6,8 @@ const util = require("util");
 
 ENV.config();
 
+/* global process */
+
 /**
  * Establishes a MySQL database connection.
  * @type {mysql.Connection}

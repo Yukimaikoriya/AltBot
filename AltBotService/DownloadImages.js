@@ -22,7 +22,7 @@ const logger = winston.createLogger({
  */
 getDataFromDatabase()
   .then((readData) => {
-    readData.forEach(({ image_id, image_url, flag }) => {
+    readData.forEach(({ image_id, image_url }) => {
       downloadImage(image_url, `OutputImages/${image_id}.png`)
         .then((filePath) => {
           logger.info(`Image downloaded successfully: ${filePath}`);

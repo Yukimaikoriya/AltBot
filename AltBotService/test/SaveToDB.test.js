@@ -4,6 +4,8 @@
  * @author Eddie
  */
 
+/* global jest, test, expect, describe, it, beforeEach */
+
 // Mock image list to be returned from ReadDataTimeline
 const mock_img_list = [
   {
@@ -66,7 +68,7 @@ describe("SaveToDB", () => {
     const mysql = require("mysql2/promise");
     const logger = require("winston");
     // Call DUT
-    const dut = require("../SaveToDB");
+    require("../SaveToDB");
     // the script does some async jobs. wait for it
     await jest.runAllTimersAsync();
     // Should read once
@@ -91,7 +93,7 @@ describe("SaveToDB", () => {
     // Modify mock connect to fail
     mysql.pool.getConnection.mockImplementation(async () => {throw "connection failure";});
     // Call DUT
-    const dut = require("../SaveToDB");
+    require("../SaveToDB");
     await jest.runAllTimersAsync();
     // Should not read
     expect(read).toHaveBeenCalledTimes(0);
@@ -115,7 +117,7 @@ describe("SaveToDB", () => {
     // Modify mock query to fail
     mysql.pool.query.mockImplementation(async () => {throw "Query failure";});
     // Call DUT
-    const dut = require("../SaveToDB");
+    require("../SaveToDB");
     await jest.runAllTimersAsync();
     // should not read
     expect(read).toHaveBeenCalledTimes(0);

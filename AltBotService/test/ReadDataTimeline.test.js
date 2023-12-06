@@ -4,6 +4,8 @@
  * @author Eddie
  */
 
+/* global jest, test, expect */
+
 // Mock return value from server
 const mock_ret_val = {
   data: [
@@ -53,7 +55,7 @@ jest.mock("mastodon-api", () => {
   class Mastodon {
     static con = con;
     static get = get;
-    constructor(arg) {
+    constructor() {
       con();
       this.get = get;
     }

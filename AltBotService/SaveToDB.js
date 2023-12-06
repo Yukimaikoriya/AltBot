@@ -6,6 +6,8 @@ const { format } = winston;
 
 ENV.config();
 
+/* global process */
+
 // Configure Winston logger
 const logger = winston.createLogger({
   level: "info",

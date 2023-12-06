@@ -31,5 +31,9 @@ jobs:
         node-version: ${{ matrix.node-version }}
         cache: 'npm'
         cache-dependency-path: AltBotService/package-lock.json
-    - run: npm ci
-    - run: npm test
+    - name: Install deps
+      run: npm ci
+    - name: Run unit tests
+      run: npm test
+    - name: Lint codebase
+      run: npm run lint
