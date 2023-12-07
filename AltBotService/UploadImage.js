@@ -4,6 +4,8 @@ const path = require("path");
 const axios = require("axios");
 const winston = require("winston");
 
+/* global process */
+
 // Configure Winston logger
 const logger = winston.createLogger({
   level: "info",

@@ -4,6 +4,7 @@
  * @author Eddie
  */
 
+/* global jest, test, expect */
 
 // Mock files in directory
 const mock_files = [
@@ -25,7 +26,7 @@ jest.mock("mastodon-api", () => {
           Mastodon.nstatus += 1;
         } else return { data: [] };
       });
-      constructor(arg) {
+      constructor() {
         con();
         this.post = Mastodon.post;
       }
@@ -39,7 +40,7 @@ jest.mock("fs", () => {
         readdir: jest.fn((path, callback) => {
             callback(undefined, mock_files);
         }),
-        statSync: jest.fn((path) => {
+        statSync: jest.fn(() => {
             return {
                 isFile: () => true
             }
@@ -76,7 +77,7 @@ test('UploadImage', async () => {
     const m = require('mastodon-api');
     const axios = require('axios');
     // Call DUT
-    const dut = require('../UploadImage');
+    require('../UploadImage');
     // the script does some async jobs. wait for it
     await jest.runAllTimersAsync();
     // should call readdir once

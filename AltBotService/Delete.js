@@ -3,6 +3,8 @@ const path = require("path");
 const ENV = require("dotenv");
 ENV.config();
 
+/* global process */
+
 const folderPath = process.env.FOLDER_PATH;
 
 /**
