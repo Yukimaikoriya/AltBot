@@ -41,6 +41,71 @@
     - alt_api_invoke.py
     - bot.js
 
+## Design Structure
+
+#### ALTBotService
+
+##### Data Retrieval
+
+###### ReadDataTimeline.js
+
+We use the mastodon's **home timeline API** to fetch the statuses from the following users. We check the `MediaAttachment` entity to filter the posts with images. If the description doesn't exist for the fetched image, we will store two attributes of each image `id` and `url` in `imageList` that need further alt-text-generation processing. Other modules can retrieve the `imageList` from `getImageList()`.
+
+> `id` The ID of the (image) attachment.
+>
+> `url`  The location of the original full-size (image) attachment.
+>
+>  `description`  Alternate text that describes what is in the media attachment, to be used for the visually impaired or when media attachments do not load.
+
+
+
+##### Data Storage & Database Structure
+
+###### SaveToDB.js
+
+We store the fetched `imageList` in our database. We use a MySQL database to store the image (`id` & `url`) and a `flag` representing the processed status. The attribute `flag`  is initialized to 0 to indicate unprocessed. The database structure is as follows:
+
+`image_id | image_url | flag`
+
+
+
+##### Data Processing
+
+`ExtractData.js`  Fetch records from the database.
+
+`DownloadImages.js `  Download images from their relevant `url` and save them into the given filepaths (`OutputImages` folder).
+
+
+
+##### Reuploading with ALT text
+
+###### UploadImages.js
+
+For each image that needs to be uploaded, we perform a POST request using Axios to retrieve the generated alt-text from our machine-learning model endpoint in `app.py`. We use node-mastadon API `M.post(path, [params])` to post a new `#ALTBOT` status with the image attachment with alt-text.
+
+> **media API data parameters**
+>
+> `file` Image filepath
+>
+> `descriptoin` Generated alt text
+>
+> 
+>
+> **statuses API data parameters** 
+>
+> `status` "#ALTBOT"
+>
+> `media_ids[]` Attachment (image) id returned from media API
+
+###### updateFlagInDatabase.js
+
+After successfully uploading an image, we set its `flag ` to 1 in the database.
+
+
+
+#### ALTTagMLServive
+
+We make a Web Application with Flask, illustrating how our alt-text generation pipeline works. 
 
 
 ## Instructions to Run

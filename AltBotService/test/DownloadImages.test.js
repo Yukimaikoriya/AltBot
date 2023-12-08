@@ -4,6 +4,8 @@
  * @author Eddie
  */
 
+/* global jest, test, expect */
+
 // Fake data for testing
 const testData = [
     {image_id: 'test-image1',image_url: 'test-url1', flag: 'test-flag1'},
@@ -15,11 +17,17 @@ jest.mock('../ExtractData', () => {
     return jest.fn(async () => {return testData;});
 });
 
+// Mock winston logger
+jest.mock('winston', () => require('./winston'));
+
+// Mock dotenv
+jest.mock('dotenv');
+
 // Mock https module. 
 // Return success 200 for test-url1, failure 404 otherwise
 jest.mock('https', () => {
     // Mock pipe that closes immediately
-    const pipe = jest.fn(arg => {
+    const pipe = jest.fn(() => {
         let ret = {};
         ret.on = (event, callback) => {
             if (event === 'close') callback();
@@ -57,11 +65,12 @@ jest.mock('fs', () => {
 
 // Test for DownloadImages
 test('DownloadImages', async () => {
-    const ed = require('../ExtractData');
+    require('../ExtractData');
     const https = require('https');
     const fs = require('fs');
+    const logger = require('winston');
     // run the main script
-    const dut = require('../DownloadImages');
+    require('../DownloadImages');
     // the script does some async job so we must wait
     await jest.runAllTimersAsync();
     // Should call 2 GETs for 2 urls in testData
@@ -72,4 +81,6 @@ test('DownloadImages', async () => {
     expect(fs.createWriteStream).toBeCalledWith('OutputImages/test-image1.png');
     // Should call 1 resume for 1 invalid url in testData
     expect(https.resume).toBeCalledTimes(1);
+    // Should report 1 error for 1 invalid url in testData
+    expect(logger._error).toBeCalledTimes(1);
 });

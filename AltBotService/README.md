@@ -4,22 +4,25 @@ This is the main mastadon bot that replies to images [todo: based on some condit
 
 We are using the publicly available Mastadon API to communicate and transfer data between our ML model and Mastadon.
 
-## Steps to run  
-
+## Steps to run
 
 ### Step 1
-Create MySQl table with name "**Images**" and column names: *image_id, image_url, flag* before running the code.
+
+Create MySQl table with name "**Images**" and column names: _image_id, image_url, flag_ before running the code.
 
 ### Step 2
+
+Create a .env file
+Add your crendentials to the env file
+
+### Step 3
+
 To directly start the running of the bot, you can execute the **main.sh** bash file.
 `./main.sh`
 
-[!NOTE]  
-Incase of error related to permission, make sure to give proper permission by executing `chmod +x main.sh`
-
-### TODO ADD MORE STEPS
-of credentials, how to host?, how it runs?
-
+> [!NOTE]
+> Incase of error related to permission, make sure to give proper permission by executing `chmod +x main.sh`
 
 ## TESTING
+
 Please GOTO the Test folder for testing specific instructions.

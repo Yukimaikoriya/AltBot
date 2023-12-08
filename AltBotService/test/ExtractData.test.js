@@ -4,8 +4,16 @@
  * @author Eddie
  */
 
+/* global jest, test, expect, beforeEach */
+
 // Mock success value
 const SUCCESS = {_: "An object"};
+
+// Mock winston logger
+jest.mock('winston', () => require('./winston'));
+
+// Mock dotenv
+jest.mock('dotenv');
 
 // Reset modules before each test
 beforeEach(() => {
