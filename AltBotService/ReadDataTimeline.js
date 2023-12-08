@@ -59,11 +59,13 @@ const getImageList = async () => {
 
     if (resp.data.length !== 0) {
       for (const toot of resp.data) {
+        post_id = toot["id"];
+        user_id = toot.account["id"];
         if (toot.media_attachments.length !== 0) {
           toot.media_attachments.forEach((val) => {
             if (val.description === null) {
               const { url: imageUrl, id: imageId } = val; // Using object destructuring
-              imageList.push({ imageUrl, imageId }); // Using property shorthand
+              imageList.push({ imageUrl, imageId, post_id, user_id }); // Using property shorthand
             }
           });
         }

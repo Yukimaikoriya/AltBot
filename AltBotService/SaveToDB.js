@@ -73,10 +73,11 @@ async function getExistingImageIds() {
  * @param {string} imageUrl - The URL of the image.
  * @returns {Promise<void>} A promise that resolves once the operation is complete.
  */
-async function insertNewImage(imageId, imageUrl) {
+async function insertNewImage(imageId, imageUrl, post_id, user_id) {
   const flag = 0;
-  const sql = "INSERT INTO Images (image_id, image_url, flag) VALUES (?, ?, ?)";
-  const values = [imageId, imageUrl, flag];
+  const sql =
+    "INSERT INTO Images (image_id, image_url, flag, post_id, user_id) VALUES (?, ?, ?, ?, ?)";
+  const values = [imageId, imageUrl, flag, post_id, user_id];
   await pool.query(sql, values);
   logger.info(`Inserted new record with image_id: ${imageId}`);
 }
@@ -100,8 +101,8 @@ async function main() {
       ({ imageId }) => !existingImageIds.includes(imageId)
     );
 
-    for (const { imageUrl, imageId } of newImages) {
-      await insertNewImage(imageId, imageUrl);
+    for (const { imageUrl, imageId, post_id, user_id } of newImages) {
+      await insertNewImage(imageId, imageUrl, post_id, user_id);
     }
 
     connection.release();
