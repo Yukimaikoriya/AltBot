@@ -3,11 +3,12 @@
     console.log("contentScript start");
 
     var localIdDictionary = {};
+    var tmpCntr = 0;
     // var idSet = new Set();
 
     chrome.runtime.onMessage.addListener((obj, sender, response) => 
     {
-        console.log("Inside onMessage Listener")
+        console.log("Inside onMessage Listener");
 
         const {type} = obj;
 
@@ -18,11 +19,21 @@
 
     });
 
-    function generateAltTag() 
+    function delay(ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+    }
+
+    async function generateAltTag() 
     {
         // Your logic to generate alt tag
         console.log("altTagGenerated");
-        console.log("Need ML model");
+
+        tmpCntr += 1;
+        console.error(tmpCntr);
+        await setTimeout(function() {
+            console.error("TimeOUT done");
+        }, 5000);
+
         return getCurrentTime();
     }
 
@@ -95,9 +106,10 @@
             var altTag = "";
     
             if (localIdDictionary.hasOwnProperty(imgId)) {
-                console.log("imgId found locally");
+                console.log("imgId found locally", imgId);
+                console.log(localIdDictionary);
                 flag = 0;
-                altTag = localIdDictionary[imgId];
+                altTag = localIdDictionary[imgId] + " Came from local storage " + tmpCntr;
                 resolve({
                     flag: flag,
                     altTag: altTag,
@@ -105,12 +117,13 @@
             } else {
                 chrome.storage.local.get([imgId], function (result) {
                     if (result.hasOwnProperty(imgId)) {
-                        console.log("imgId found in chrome storage");
+                        console.log("imgId found in chrome storage", imgId);
+                        console.log(localIdDictionary);
                         flag = 1;
-                        altTag = result[imgId];
-                        localSet.add(imgId);
+                        altTag = JSON.parse(result[imgId]) + " Came from chrome.local storage";
                     } else {
-                        console.log("Image Id found nowhere");
+                        console.log("Image Id found nowhere ", imgId);
+                        console.log(localIdDictionary);
                         flag = 2;
                     }
     
@@ -123,11 +136,11 @@
         });
     }
 
-    function handleMutations(mutations) 
+    async function handleMutations(mutations) 
     {
-        mutations.forEach(async function (mutation) 
+        await mutations.forEach(async function (mutation) 
         {
-            console.log("Mutation detected: ", mutation.type);
+            // console.log("Mutation detected: ", mutation.type);
             if (mutation.type === "childList")
             {
                 var newImagesContainers = document.getElementsByClassName("media-gallery__item-thumbnail");
@@ -136,25 +149,38 @@
                     var imgContainer = newImagesContainers[i];
                     var imgUniqueId = getUniqueImgId(imgContainer);
 
-                    // var {flag, altTag} = await getImgStatus(imgUniqueId);
-                    // console.log(flag, altTag, "BRUH");
+                    var {flag, altTag} = await getImgStatus(imgUniqueId);
+                    console.log(flag, altTag, "BRUH");
 
 
-                    // if (flag == 0)  // found in local = do nothing
-                    // {
-                    //     // TODO
-                    // }
-                    // else if (flag == 1) // found in chromeStorage = reuse altTag
-                    // {
-
-                    // }
-                    // else    // Run ML model and store in chromeStorage
-                    // {
-
-                    // }
-                    altTag = generateAltTag();
-                    populateAltTitleTags(imgContainer.children, altTag);
-                    addAltButtonOnImg(imgContainer.parentElement)
+                    if (flag == 0)  // found in local = do nothing
+                    {
+                        populateAltTitleTags(imgContainer.children, altTag);
+                        addAltButtonOnImg(imgContainer.parentElement);
+                    }
+                    else if (flag == 1) // found in chromeStorage = reuse altTag
+                    {
+                        populateAltTitleTags(imgContainer.children, altTag);
+                        addAltButtonOnImg(imgContainer.parentElement);
+                        saveAltInLocal(imgUniqueId, altTag);
+                    }
+                    else    // Run ML model and store in chromeStorage
+                    {
+                        altTag = await generateAltTag();
+                        populateAltTitleTags(imgContainer.children, altTag);
+                        addAltButtonOnImg(imgContainer.parentElement);
+                        saveAltInChromeStorage(imgUniqueId, altTag)
+                        .then(() => {
+                            // Data is successfully stored, perform actions here
+                            console.log('Data stored successfully');
+                        })
+                        .catch((error) => {
+                            // Handle the error if storage fails
+                            console.error('Error storing data:', error);
+                        });
+                        saveAltInLocal(imgUniqueId, altTag);
+                    }
+                    
                 }
             }
             
@@ -162,6 +188,25 @@
         });
     }
     
+    function saveAltInLocal(imgUniqueId, altTag)
+    {
+        localIdDictionary[imgUniqueId] = altTag;
+        console.log("Saved in Local");
+    }
+
+    function saveAltInChromeStorage(imgUniqueId, altTag) {
+        return new Promise((resolve, reject) => {
+            chrome.storage.local.set({
+                [imgUniqueId]: JSON.stringify(altTag)
+            }, function () {
+                if (chrome.runtime.lastError) {
+                    reject(new Error(chrome.runtime.lastError));
+                } else {
+                    resolve();
+                }
+            });
+        });
+    }
 
     function startDomObserver()
     {
@@ -181,10 +226,10 @@
 
         // Display the current time
         // console.log("Current time: " + currentTime);
-        return currentTime
+        return currentTime;
 
     }
     
 
-    startDomObserver();
+    // startDomObserver();
 })();
