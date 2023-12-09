@@ -1,13 +1,16 @@
 from flask import Flask, request
 import requests
+import json
+import time
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 
 @app.route('/', methods = ['GET', 'POST'])
 def handle_request():
     url = str(request.args.get('input'))
-
-    API_TOKEN = "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"
+    API_TOKEN = ""
     model = 'nlpconnect/vit-gpt2-image-captioning'
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
@@ -21,15 +24,20 @@ def handle_request():
             json=data
         )
     except Exception as e:
-        return ("error: Error processing model request - %s"%(str(e)))
+        return ("error: Error processing %s"%(str(e)))
 
     try:
       alt_text = response.json()[0]['generated_text']
+        # alt_text = response.json()
     except Exception as e:
-        print(e)
         return ("error: Error processing %s"%(str(e)))
 
-    return alt_text
+    r = {'text': alt_text, 'timestamp': time.time()}
+    json_dump = json.dumps(r)
+
+    return json_dump
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
