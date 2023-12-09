@@ -30,9 +30,6 @@
 
         tmpCntr += 1;
         console.error(tmpCntr);
-        await setTimeout(function() {
-            console.error("TimeOUT done");
-        }, 5000);
 
         return getCurrentTime();
     }
@@ -104,8 +101,10 @@
         return new Promise((resolve) => {
             var flag = -1;
             var altTag = "";
-    
-            if (localIdDictionary.hasOwnProperty(imgId)) {
+            
+            console.log(localIdDictionary[imgId] !== undefined, localIdDictionary[imgId], localIdDictionary[imgId], imgId)
+            if (localIdDictionary[imgId] !== undefined) {
+                
                 console.log("imgId found locally", imgId);
                 console.log(localIdDictionary);
                 flag = 0;
@@ -123,8 +122,18 @@
                         altTag = JSON.parse(result[imgId]) + " Came from chrome.local storage";
                     } else {
                         console.log("Image Id found nowhere ", imgId);
-                        console.log(localIdDictionary);
-                        flag = 2;
+                        if (localIdDictionary[imgId] !== undefined)
+                        {
+                            console.log("But found in Local now");
+                            flag = 0;
+                            altTag = localIdDictionary[imgId] + " Came from local storage " + tmpCntr;
+                        }
+                        else
+                        {
+                            console.log(localIdDictionary);
+                            flag = 2;
+                        }
+                        
                     }
     
                     resolve({
@@ -136,9 +145,9 @@
         });
     }
 
-    async function handleMutations(mutations) 
+    function handleMutations(mutations) 
     {
-        await mutations.forEach(async function (mutation) 
+        mutations.forEach(async function (mutation) 
         {
             // console.log("Mutation detected: ", mutation.type);
             if (mutation.type === "childList")
