@@ -1,4 +1,4 @@
-# AltBot
+# AltBot 
 
 ## About
 <p class="has-line-data" data-line-start="0" data-line-end="1">Project AltBot is our final project submission as a part of the course in CSE 210, instructed by Professor Thomas Powell.</p>
