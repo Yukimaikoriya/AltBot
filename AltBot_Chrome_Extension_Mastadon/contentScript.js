@@ -21,7 +21,8 @@
     function generateAltTag() 
     {
         // Your logic to generate alt tag
-        console.log("altTagGenerated")
+        console.log("altTagGenerated");
+        console.log("Need ML model");
         return getCurrentTime();
     }
 
