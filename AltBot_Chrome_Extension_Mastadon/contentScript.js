@@ -27,11 +27,13 @@
     {
         // Your logic to generate alt tag
         console.log("altTagGenerated");
+
         tmpCntr += 1;
         console.error(tmpCntr);
         await setTimeout(function() {
             console.error("TimeOUT done");
         }, 5000);
+
         return getCurrentTime();
     }
 
