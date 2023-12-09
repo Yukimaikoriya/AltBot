@@ -1,93 +1,90 @@
-const Mastodon = require("mastodon-api");
-const ENV = require("dotenv");
-const winston = require("winston");
-
-ENV.config();
-
-/* global process */
-
-// Configure Winston logger
-const logger = winston.createLogger({
-  level: "info",
-  format: winston.format.combine(
-    winston.format.timestamp(),
-    winston.format.json()
-  ),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({ filename: "app.log" }),
-  ],
-});
-
+"use strict";
 /**
- * Logs the start of the Read Timeline Bot.
+ * @file Unit test for ReadDataTimeline.js
+ * @author Eddie
  */
-logger.info("Read Timeline Bot Started");
 
-/**
- * Initializes and configures the Mastodon API client.
- * @type {Mastodon}
- * @param {Object} config - The configuration object for Mastodon API.
- * @param {string} config.client_key - Client Key obtained from Mastodon.
- * @param {string} config.client_secret - Client Secret obtained from Mastodon.
- * @param {string} config.access_token - Access Token for authenticating with the Mastodon API.
- * @param {number} config.timeout_ms - Timeout for API requests in milliseconds.
- * @param {string} config.api_url - Base URL for the Mastodon API.
- */
-const M = new Mastodon({
-  client_key: process.env.CLIENT_KEY,
-  client_secret: process.env.CLIENT_SECRET,
-  access_token: process.env.ACCESS_TOKEN,
-  timeout_ms: parseInt(process.env.TIMEOUT_MS, 10),
-  api_url: process.env.API_URL,
-});
+/* global jest, test, expect */
 
-/**
- * Asynchronously retrieves a list of images from the home timeline
- * where the images have no existing descriptions.
- *
- * @async
- * @returns {Promise<Array<Object>>} A promise that resolves to an array of objects,
- * each containing 'imageUrl' and 'imageId' for images without descriptions.
- * @throws {Error} Throws an error if fetching the home timeline fails.
- */
-const getImageList = async () => {
-  const imageList = [];
+// Mock return value from server
 
-  try {
-    const resp = await M.get("timelines/home", {});
-
-    if (resp.data.length !== 0) {
-      for (const toot of resp.data) {
-        post_id = toot["id"];
-        user_id = toot.account["id"];
-        if (toot.media_attachments.length !== 0) {
-          toot.media_attachments.forEach((val) => {
-            if (val.description === null) {
-              const { url: imageUrl, id: imageId } = val; // Using object destructuring
-              imageList.push({ imageUrl, imageId, post_id, user_id }); // Using property shorthand
-            }
-          });
+const mock_ret_val = {
+  data: [
+    {
+      account: { id: 'user-id1' },
+      media_attachments: [
+        {
+          description: null,
+          url: 'test-url1',
+          id: 'test-id1'
+        },
+        {
+          description: 'something',
+          url: 'test-url2',
+          id: 'test-id2'
         }
-      }
+      ],
+    },
+    {
+      account: { id: 'user-id2' },
+      media_attachments: [
+        {
+          description: null,
+          url: 'test-url3',
+          id: 'test-id3'
+        }
+      ]
+    },
+    {
+      account: { id: 'user-id3' },
+      media_attachments: []
     }
-
-    return imageList;
-  } catch (error) {
-    logger.error("Error fetching home timeline:", error);
-    throw error;
-  }
+  ],
 };
 
-// Logging the start of the image list retrieval
-logger.info("Fetching image list from the home timeline...");
 
-getImageList()
-  .then((imageList) => {
-    logger.info("Image list fetched successfully:", imageList);
-  })
-  .catch((error) => {
-    logger.error("Error fetching image list:", error);
+// Expected result pattern
+const matcher = {
+    imageUrl: expect.stringMatching(/test-url(1|3)/),
+    imageId: expect.stringMatching(/test-id(1|3)/)
+}
+
+// Mock mastodon-api that returns `mock_ret_val` for `GET timelines/home`
+jest.mock("mastodon-api", () => {
+  const con = jest.fn();
+  const get = jest.fn((method) => {
+    if (method === "timelines/home") {
+      return mock_ret_val;
+    } else return { data: [] };
   });
+  class Mastodon {
+    static con = con;
+    static get = get;
+    constructor() {
+      con();
+      this.get = get;
+    }
+  }
+  return Mastodon;
+});
 
-module.exports = getImageList;
+// Mock winston logger
+jest.mock("winston", () => require('./winston'));
+
+// Mock dotenv
+jest.mock("dotenv");
+
+// Main test
+test('ReadDataTimeline', async () => {
+    const m = require('mastodon-api');
+    const dut = require('../ReadDataTimeline');
+    // Call DUT
+    const ret = await dut();
+    // should return 1 & 3
+    expect(ret).toHaveLength(2);
+    expect(ret[0]).toMatchObject(matcher);
+    expect(ret[1]).toMatchObject(matcher);
+    // should construct a Mastodon object and call `get`
+    expect(m.con).toHaveBeenCalled();
+    expect(m.get).toHaveBeenCalled();
+});
