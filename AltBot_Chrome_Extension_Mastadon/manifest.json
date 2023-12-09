@@ -3,7 +3,7 @@
     "version": "0.1.0",
     "description": "Adds alt tag to images",
     "permissions": ["storage", "tabs"],
-    "host_permissions": ["https://*.mastodon.social/*"],
+    "host_permissions": ["https://*.mastodon.social/*", "https://*.pythonanywhere.com/*"],
     "background": {
       "service_worker": "background.js"
     },

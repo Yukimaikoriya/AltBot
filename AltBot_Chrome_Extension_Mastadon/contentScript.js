@@ -23,7 +23,7 @@
         return new Promise(resolve => setTimeout(resolve, ms));
     }
 
-    async function generateAltTag() 
+    async function TMPgenerateAltTag() 
     {
         // Your logic to generate alt tag
         console.log("altTagGenerated");
@@ -33,6 +33,28 @@
 
         return getCurrentTime();
     }
+
+    async function generateAltTag(imageUrl) {
+        const BASE_URL = 'https://yuuu.pythonanywhere.com/';
+      
+        const url = new URL(BASE_URL);
+        tmpCntr += 1;
+        url.searchParams.append('input', imageUrl);
+      
+        try {
+          const response = await fetch(url);
+          if (!response.ok) {
+            console.errpr("HTTP error! Status: ",response.status);
+          }
+          const data = await response.json();
+          return data['text'];
+        } catch (error) {
+          console.error('Error:', error.message);
+            //   throw error;
+            return "Error Generating AltTag";
+        
+        }
+      }
 
     function populateAltTitleTags(images, altTag) 
     {
@@ -87,7 +109,10 @@
         // Get the part before the file extension
         var fileNameWithoutExtension = fileNameParts[0];
 
-        return fileNameWithoutExtension;
+        return {
+            imgUniqueId:fileNameWithoutExtension,
+            imageUrl: imageUrl
+        };
     }
 
     function getImgStatus(imgId)
@@ -156,7 +181,8 @@
                 for (var i = 0; i < newImagesContainers.length; i++) 
                 {
                     var imgContainer = newImagesContainers[i];
-                    var imgUniqueId = getUniqueImgId(imgContainer);
+                    var {imgUniqueId, imageUrl} = getUniqueImgId(imgContainer);
+                    console.log("NEW LOGGGG", imageUrl)
 
                     var {flag, altTag} = await getImgStatus(imgUniqueId);
                     console.log(flag, altTag, "BRUH");
@@ -175,7 +201,7 @@
                     }
                     else    // Run ML model and store in chromeStorage
                     {
-                        altTag = await generateAltTag();
+                        altTag = await generateAltTag(imageUrl);
                         populateAltTitleTags(imgContainer.children, altTag);
                         addAltButtonOnImg(imgContainer.parentElement);
                         saveAltInChromeStorage(imgUniqueId, altTag)
