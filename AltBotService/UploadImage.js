@@ -2,10 +2,13 @@ const Mastodon = require("mastodon-api");
 const fs = require("fs");
 const path = require("path");
 const axios = require("axios");
+
 const winston = require("winston");
-
-/* global process */
-
+const {
+  updateAltTextFlag,
+  retrievePostId,
+  closeConnection,
+} = require("./dbutil");
 // Configure Winston logger
 const logger = winston.createLogger({
   level: "info",
@@ -39,14 +42,65 @@ const M = new Mastodon({
 const ServerAddress = process.env.SERVER_ADDRESS;
 const folderPath = process.env.FOLDER_PATH; // Replace with your actual folder path
 
-/**
- * Reads files from the specified folder and posts them to Mastodon.
- * For each image file, it sends a request to an ML model endpoint to generate an ALT tag,
- * then uploads the image to Mastodon with the generated ALT tag.
- *
- * @param {string} folderPath - The path to the folder containing image files.
- */
-fs.readdir(folderPath, (err, files) => {
+// Function to process each image file
+async function processImage(file) {
+  const filePath = path.join(folderPath, file);
+  if (fs.statSync(filePath).isFile() && /\.(jpg|jpeg|png|gif)$/i.test(file)) {
+    logger.info(`Processing file: ${file}`);
+
+    try {
+      // Call ML model here to pass real description (ALT Tag)
+      const fileData = fs.readFileSync(filePath, { encoding: "base64" });
+      const response = await axios.post(`${ServerAddress}/alt_model_endpoint`, {
+        file: fileData,
+      });
+      logger.info("ML Model response:", response.data);
+
+      // Store ALT tag in the database
+      const altTag = response.data.alt_tag;
+      await updateAltTextFlag(file.substring(0, file.length - 4), altTag);
+
+      // Retrieve post ID
+      const postId = await retrievePostId(file.substring(0, file.length - 4));
+
+      // Upload to Mastodon and reply to the original post
+      if (postId) {
+        M.post("media", {
+          file: fs.createReadStream(filePath),
+          description: JSON.stringify(response.data.alt_tag),
+          in_reply_to_id: postId,
+        })
+          .then((resp) => {
+            const id = resp.data.id;
+            logger.info(`Media uploaded successfully with ID: ${id}`);
+
+            // Post a status for each uploaded image
+            M.post("statuses", {
+              status: "#ALTBOT",
+              media_ids: [id],
+              in_reply_to_id: postId,
+            })
+              .then(() => {
+                logger.info("Status posted successfully.");
+              })
+              .catch((statusError) => {
+                logger.error("Error posting status:", statusError);
+              });
+          })
+          .catch((uploadError) => {
+            logger.error("Error uploading media:", uploadError);
+          });
+      }
+    } catch (error) {
+      logger.error("Error during image processing:", error);
+    }
+  }
+}
+
+// Reads files from the specified folder and posts them to Mastodon.
+// For each image file, it sends a request to an ML model endpoint to generate an ALT tag,
+// then uploads the image to Mastodon with the generated ALT tag.
+fs.readdir(folderPath, async (err, files) => {
   if (err) {
     logger.error("Error reading folder:", err);
     return;
@@ -54,42 +108,11 @@ fs.readdir(folderPath, (err, files) => {
 
   logger.info(`Found ${files.length} files in the folder.`);
 
-  files.forEach((file) => {
-    const filePath = path.join(folderPath, file);
-    if (fs.statSync(filePath).isFile() && /\.(jpg|jpeg|png|gif)$/i.test(file)) {
-      logger.info(`Processing file: ${file}`);
+  // Process each image file concurrently
+  await Promise.all(files.map(processImage));
 
-      // Call ML model here to pass real description (ALT Tag)
-      const fileData = fs.readFileSync(filePath, { encoding: "base64" });
-      axios
-        .post(`${ServerAddress}/alt_model_endpoint`, { file: fileData })
-        .then((response) => {
-          logger.info("ML Model response:", response.data);
+  logger.info("Image processing completed.");
 
-          M.post("media", {
-            file: fs.createReadStream(filePath),
-            description: JSON.stringify(response.data.alt_tag),
-          })
-            .then((resp) => {
-              const id = resp.data.id;
-              logger.info(`Media uploaded successfully with ID: ${id}`);
-
-              // Post a status for each uploaded image
-              M.post("statuses", { status: "#ALTBOT", media_ids: [id] })
-                .then(() => {
-                  logger.info("Status posted successfully.");
-                })
-                .catch((statusError) => {
-                  logger.error("Error posting status:", statusError);
-                });
-            })
-            .catch((uploadError) => {
-              logger.error("Error uploading media:", uploadError);
-            });
-        })
-        .catch((modelError) => {
-          logger.error("Error from ML model:", modelError);
-        });
-    }
-  });
+  // Close the MySQL connection pool after all image processing is completed
+  closeConnection();
 });

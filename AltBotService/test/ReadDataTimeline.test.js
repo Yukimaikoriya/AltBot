@@ -7,9 +7,11 @@
 /* global jest, test, expect */
 
 // Mock return value from server
+
 const mock_ret_val = {
   data: [
     {
+      account: { id: 'user-id1' },
       media_attachments: [
         {
           description: null,
@@ -17,26 +19,29 @@ const mock_ret_val = {
           id: 'test-id1'
         },
         {
-            description: 'something',
-            url: 'test-url2',
-            id: 'test-id2'
+          description: 'something',
+          url: 'test-url2',
+          id: 'test-id2'
         }
       ],
     },
     {
-        media_attachments: [
-            {
-                description: null,
-                url: 'test-url3',
-                id: 'test-id3'
-            }
-        ]
+      account: { id: 'user-id2' },
+      media_attachments: [
+        {
+          description: null,
+          url: 'test-url3',
+          id: 'test-id3'
+        }
+      ]
     },
     {
-        media_attachments: []
+      account: { id: 'user-id3' },
+      media_attachments: []
     }
   ],
 };
+
 
 // Expected result pattern
 const matcher = {
