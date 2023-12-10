@@ -150,6 +150,8 @@ Onkar and Shreyas discussed the video check in and their deadline.
 #### Documentation
 Niraj & Jay discussed regarding what documentation should be done for proper understanding of the code. They started working on JS Docs.
 
+---
+
 ## Meeting 7: November 29th, 2023
 
 ### Participants
@@ -177,5 +179,97 @@ Niraj, Jay and Jash added JS documentation, along with Readme files, structured 
 #### Presentation Preparation
 
 Everyone else discussed what to prepare for the presentation that we need to present live. 
+
+---
+
+## Meeting 8: December 6th, 2023
+
+### Participants
+
+- Onkar
+- Shreyas
+- Jash
+- Niraj
+- Andrew
+- Xuanyu
+- Eddie
+- Jay
+
+### Agenda
+1. **Sprint/ Catch-Up meet**
+2. **Talk about the future scope of the project**
+3. **Unit Testing**
+
+
+### Meeting Details
+
+#### Unit Testing
+Eddie told us about the various tests done on the JS files and discussed plans with Andrew.
+
+#### Post presentation Update
+Onkar led the discussion on modifying our code to implement the various feedback we got on the presentation.
+
+#### Chrome Extension
+Xuanyu and Jay, along with Shreyas' assistance, started working on the Chrome Extension.
+
+
+#### Presentation Preparation
+
+Everyone else discussed what to prepare for the live presentation that we needed to present. 
+
+---
+
+
+## Meeting 9: December 7th, 2023
+
+### Participants
+
+- Jash
+- Xuanyu
+- Jash
+- Niraj
+- Jay
+- Andrew
+
+### Agenda
+1. **Set up GitHub projects**
+2.** Discuss updates on the Chrome extension**
+
+### Meeting Details
+
+#### Set up GitHub projects
+We set up GitHub projects and made a list of significant tasks that are done, being done, and pending to be initiated.
+
+
+####  Discuss updates on the Chrome extension
+Xuanyu and Jay caught up and discussed their progress on establishing the Chrome extension for the project.
+
+---
+
+
+## Meeting 10: December 8th, 2023
+
+### Participants
+
+- Onkar
+- Shreyas
+- Jash
+- Niraj
+- Jay
+- Andrew
+- Xuanyu
+
+### Agenda
+1. **Code Catch-Up**
+2. **Future Plans**
+
+### Meeting Details
+
+#### JS Code Update
+A massive chunk of the meeting focussed on Jash updating us on whatever changes he made throughout the last couple of days to ensure we are all on the same page regarding how the architecture works. 
+
+
+#### Planning future steps
+The next part, led by Shreyas and Niraj, focussed on the team utilizing GitHub Projects to discuss future tasks and who to assign those tasks to. Duties were assigned based on schedule, expertise, and the member's desire to work on the job.
 
 
