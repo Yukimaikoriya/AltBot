@@ -13,6 +13,9 @@ const logger = winston.createLogger({
 });
 const ENV = require("dotenv");
 ENV.config();
+
+/* global process */
+
 /**
  * Initializes and configures the MySQL database connection pool.
  * @type {Pool}
@@ -32,7 +35,7 @@ const updateAltTextFlag = async (fileName, altTag) => {
     pool.query(
       "UPDATE Images SET alt_text = ?, flag = 1 WHERE image_id = ?",
       [altTag, fileName],
-      (error, updateResults) => {
+      (error) => {
         if (error) {
           logger.error("Error updating ALT tag:", error);
           return reject(error);
