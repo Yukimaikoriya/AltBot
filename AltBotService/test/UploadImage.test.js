@@ -70,6 +70,15 @@ jest.mock("path");
 // Mock dotenv
 jest.mock("dotenv");
 
+// Mock dbutil
+jest.mock("../dbutil", () => {
+  return {
+    updateAltTextFlag: jest.fn(async () => {}),
+    retrievePostId: jest.fn(async () => {return "MockId#0";}),
+    closeConnection: jest.fn()
+  };
+});
+
 
 // Main test starts here
 test('UploadImage', async () => {
@@ -94,4 +103,4 @@ test('UploadImage', async () => {
     expect(m.nstatus).toBe(2);
     // should post 4 times. 2 for status and 2 for media.
     expect(m.post).toHaveBeenCalledTimes(4);
-})
+});

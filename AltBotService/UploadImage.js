@@ -1,3 +1,5 @@
+/* global process */
+
 const Mastodon = require("mastodon-api");
 const fs = require("fs");
 const path = require("path");
