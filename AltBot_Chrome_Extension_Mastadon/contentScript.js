@@ -21,30 +21,59 @@
 
     
     // Uses hosted api to generate AltTag
-    async function generateAltTag(imageUrl) 
-    {
-        const BASE_URL = 'https://yuuu.pythonanywhere.com/';
+    // async function generateAltTag(imageUrl) 
+    // {
+    //     const BASE_URL = 'https://yuuu.pythonanywhere.com/';
       
-        const url = new URL(BASE_URL);
-        tmpCntr += 1;
-        url.searchParams.append('input', imageUrl);
+    //     const url = new URL(BASE_URL);
+    //     tmpCntr += 1;
+    //     url.searchParams.append('input', imageUrl);
       
-        try 
-        {
-            const response = await fetch(url);
-            if (!response.ok) 
-            {
-                console.error("HTTP error! Status: ",response.status);
-            }
-            const data = await response.json();
-            return data['text'];
-        } catch (error) 
-        {
-            console.error('Error:', error.message);
-            //   throw error;
-            return "Error Generating AltTag";
+    //     try 
+    //     {
+    //         const response = await fetch(url);
+    //         if (!response.ok) 
+    //         {
+    //             console.error("HTTP error! Status: ",response.status);
+    //         }
+    //         const data = await response.json();
+    //         return data['text'];
+    //     } catch (error) 
+    //     {
+    //         console.error('Error:', error.message);
+    //         //   throw error;
+    //         return "Error Generating AltTag";
         
+    //     }
+    // }
+
+    
+    async function generateAltTag(imageUrl) {
+      const BASE_URL = 'https://yuuu.pythonanywhere.com/';
+      const username = 'your_username';
+      const password = 'your_password';
+      
+      tmpCntr += 1;
+
+      try {
+        const response = await fetch(BASE_URL, {
+          method: 'POST',
+          headers: new Headers({
+            'Authorization': 'Basic ' + btoa(username + ":" + password),
+            'Content-Type': 'application/json',
+          }),
+          body: JSON.stringify({ input: imageUrl }),
+        });
+        if (!response.ok) {
+          console.error(`HTTP error! Status: ${response.status}`);
         }
+        const data = await response.json();
+        return data['text'];
+      } catch (error) {
+        console.error('Error:', error.message);
+        return "Error Generating AltTag";
+        
+      }
     }
 
     // async function generateAltTag(imageUrl) 
