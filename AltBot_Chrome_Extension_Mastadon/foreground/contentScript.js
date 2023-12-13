@@ -20,36 +20,15 @@
     });
 
     
-    // Uses hosted api to generate AltTag
-    // async function generateAltTag(imageUrl) 
-    // {
-    //     const BASE_URL = 'https://yuuu.pythonanywhere.com/';
-      
-    //     const url = new URL(BASE_URL);
-    //     tmpCntr += 1;
-    //     url.searchParams.append('input', imageUrl);
-      
-    //     try 
-    //     {
-    //         const response = await fetch(url);
-    //         if (!response.ok) 
-    //         {
-    //             console.error("HTTP error! Status: ",response.status);
-    //         }
-    //         const data = await response.json();
-    //         return data['text'];
-    //     } catch (error) 
-    //     {
-    //         console.error('Error:', error.message);
-    //         //   throw error;
-    //         return "Error Generating AltTag";
-        
-    //     }
-    // }
 
     
     async function generateAltTag(imageUrl) {
       const BASE_URL = 'https://yuuu.pythonanywhere.com/';
+      // To fix direct passing of uname and pwd, we need to
+      // setup a OAuth authentication like system
+      // to give each user their own uname/pwd.
+      // Giving a common, even with a .env file can be as 
+      // easily extracted as being written here.
       const username = 'your_username';
       const password = 'your_password';
       
