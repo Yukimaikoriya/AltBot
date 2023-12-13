@@ -6,6 +6,10 @@ We are using the publicly available Mastadon API to communicate and transfer dat
 
 ## Steps to run
 
+### Background:
+
+Create a SQL database
+
 ### Step 1
 
 Create MySQl table with name "**Images**" and column names: _image_id, image_url, flag_ before running the code.
@@ -16,6 +20,10 @@ Create a .env file
 Add your crendentials to the env file
 
 ### Step 3
+
+Please proceed to the readme file of AltTagMLService and run the first 3 steps there. AltBotService/README.md
+
+### Step 4
 
 To directly start the running of the bot, you can execute the **main.sh** bash file.
 `./main.sh`
