@@ -233,7 +233,7 @@ Everyone else discussed what to prepare for the live presentation that we needed
 
 ### Agenda
 1. **Set up GitHub projects**
-2.** Discuss updates on the Chrome extension**
+2. **Discuss updates on the Chrome extension**
 
 ### Meeting Details
 
@@ -272,4 +272,47 @@ A massive chunk of the meeting focussed on Jash updating us on whatever changes 
 #### Planning future steps
 The next part, led by Shreyas and Niraj, focussed on the team utilizing GitHub Projects to discuss future tasks and who to assign those tasks to. Duties were assigned based on schedule, expertise, and the member's desire to work on the job.
 
+---
+## Meeting 11: December 12th, 2023
 
+### Participants
+
+- Onkar
+- Shreyas
+- Jash
+- Niraj
+- Jay
+- Andrew
+- Xuanyu
+
+### Agenda
+1. **Final Discussion Before Code Freeze**
+
+
+### Meeting Details
+1. We discussed all the pending To-Dos.
+2. A few errors related to Unit-Testing were resolved.
+3. Plans on designing User Guides and Onboarding steps were finalized.
+
+---
+
+## Meeting 12: December 13th, 2023
+
+### Participants
+
+
+- Xuanyu
+- Jay
+- Andrew
+- Niraj
+
+
+### Agenda
+1. **Refactor Chrome Extension Code**
+
+### Meeting Details
+
+1. Completed developing and optimized the chrome extension for the project.
+
+
+---
