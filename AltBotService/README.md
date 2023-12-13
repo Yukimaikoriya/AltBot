@@ -21,7 +21,7 @@ Add your crendentials to the env file
 
 ### Step 3
 
-Please proceed to the readme file of AltTagMLService and run the first 3 steps there. AltBotService/README.md
+Please proceed to the readme file of AltTagMLService and run the first 3 steps there. [Link](./ALTTagMLService/README.md)
 
 ### Step 4
 
