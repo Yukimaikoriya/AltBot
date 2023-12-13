@@ -45,10 +45,10 @@
 ## Design Structure
 
 Our project revolves around a central and pivotal feature: the Alt Bot integrated seamlessly with Mastodon. This serves as the cornerstone of our initiative, providing a robust foundation for enhancing accessibility within the platform. Complementing this mainstay, we've developed a Flask-based web application for alt-text generation and a dedicated alt-text Chrome extension tailored for Mastodon. Together, these components form a comprehensive toolkit, with the Alt Bot at its forefront, championing inclusivity and accessibility across Mastodon's landscape.
-
+****
 #### ALTBotService
 
-As a bot account on Mastodon, our operation entails a meticulous process of identifying posts lacking alt text. Upon detection, we promptly generate the necessary alt text and automatically respond to the original posts. Our design primarily revolves around four key components: data retrieval, data storage, data processing, and the reply mechanism. 
+As a bot account on Mastodon, our operation entails a meticulous process of identifying posts lacking alt text. Upon detection, we promptly generate the necessary alt text and automatically respond to the original posts. Our design primarily revolves around four key components: data retrieval, data storage, data processing, and the reply mechanism.  
 
 ##### Data Retrieval
 
@@ -60,7 +60,7 @@ We use the mastodon's **home timeline API** to fetch the statuses from the follo
 >
 > `url`  The location of the original full-size (image) attachment.
 >
-> `description`  Alternate text that describes what is in the media attachment, to be used for the visually impaired or when media attachments do not load.
+> `description`  Alternate text that describes what is in the media attachment, to be used for the visually impaired or when media attachments do not load.  
 
 
 
@@ -70,7 +70,7 @@ We use the mastodon's **home timeline API** to fetch the statuses from the follo
 
 We store the fetched `imageList` in our database. We use a MySQL database to store the image (`id` & `url`) and a `flag` representing the processed status. The attribute `flag`  is initialized to 0 to indicate unprocessed. We also store user and post information, facilitating tracking for our subsequent reply processes. The database structure is outlined below:
 
-`image_id | image_url | flag | post_id | user_id `
+`image_id | image_url | flag | post_id | user_id `  
 
 
 
@@ -80,7 +80,7 @@ We store the fetched `imageList` in our database. We use a MySQL database to sto
 
 `DownloadImages.js `  Download images from their relevant `url` and save them into the given filepaths (`OutputImages` folder).
 
-`dbutil.js` Helper functions for status flag manipulation and data retrieval from our database.
+`dbutil.js` Helper functions for status flag manipulation and data retrieval from our database.  
 
 
 
@@ -88,7 +88,7 @@ We store the fetched `imageList` in our database. We use a MySQL database to sto
 
 ###### UploadImages.js
 
-For each image that needs to be uploaded, we perform a POST request using Axios to retrieve the generated alt-text from our machine-learning model endpoint in `app.py`. We use node-mastadon API `M.post(path, [params])` to reply to the original post with the image attachment with alt-text.
+For each image that needs to be uploaded, we perform a POST request using Axios to retrieve the generated alt-text from our machine-learning model endpoint in `app.py`. We use node-mastadon API `M.post(path, [params])` to reply to the original post with the image attachment with alt-text.  
 
 > **media API data parameters**
 >
@@ -104,17 +104,17 @@ For each image that needs to be uploaded, we perform a POST request using Axios 
 >
 > `media_ids[]` Attachment (image) id returned from media API
 >
-> `in_replay_to_id` postID of which we reply to
+> `in_replay_to_id` postID of which we reply to  
 
 
-
+****
 #### ALTTagMLServive
 
-We have developed a Flask-based web Application, offering a visual insight into the intricacies of our alt-text generation pipeline. 
+We have developed a Flask-based web Application, offering a visual insight into the intricacies of our alt-text generation pipeline.  
 
 
-
-#### ALT Text Chrome Extension
+****
+#### ALTBot Chrome Extension
 
 We've crafted a Chrome Extension that effortlessly automates alt text insertion directly into users' homepages. This thoughtful enhancement not only streamlines the process of creating accessible content but also underscores our commitment to fostering inclusivity within the Mastodon community. 
 
