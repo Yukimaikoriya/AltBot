@@ -70,7 +70,7 @@ We use the mastodon's **home timeline API** to fetch the statuses from the follo
 
 We store the fetched `imageList` in our database. We use a MySQL database to store the image (`id` & `url`) and a `flag` representing the processed status. The attribute `flag`  is initialized to 0 to indicate unprocessed. We also store user and post information, facilitating tracking for our subsequent reply processes. The database structure is outlined below:
 
-`image_id | image_url | flag | post_id | user_id `  
+`image_id | image_url | flag | post_id | user_id | alt_text `  
 
 
 
