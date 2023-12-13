@@ -1,6 +1,12 @@
 "use strict";
-// import { jest, test, expect } from "@jest/globals";
+/**
+ * @file Unit test for SaveToDB.js
+ * @author Eddie
+ */
 
+/* global jest, test, expect, describe, it, beforeEach */
+
+// Mock image list to be returned from ReadDataTimeline
 const mock_img_list = [
   {
     imageUrl: "test-url1",
@@ -12,86 +18,119 @@ const mock_img_list = [
   },
 ];
 
-jest.mock("mysql2", () => {
-  const conn = {
-    connect: jest.fn((callback) => {
-      callback(undefined);
+// Mock MySQL Module that always success
+jest.mock("mysql2/promise", () => {
+  const release = jest.fn(async () => {});
+  const pool = {
+    getConnection: jest.fn(async () => {
+      return {
+        release: release
+      };
     }),
-    query: jest.fn((query, callback) => {
+    query: jest.fn(async (query) => {
       console.log(`Got query <${query}>`);
-      callback(undefined, undefined);
+      return [[]];
     }),
-    end: jest.fn((callback) => {
-      callback(undefined);
-    }),
+    end: jest.fn(async () => {}),
   };
   return {
-    conn,
-    createConnection: jest.fn(() => {
-      return conn;
+    release,
+    pool,
+    createPool: jest.fn(() => {
+      return pool;
     }),
   };
 });
 
+// Mock ReadDataTimeline that returns fixed value `mock_img_list`
 jest.mock("../ReadDataTimeline", () => {
   return jest.fn(async () => {
     return mock_img_list;
   });
 });
 
+// Mock winston logger
+jest.mock('winston', () => require('./winston'));
+
+// mock dotenv
+jest.mock('dotenv');
+
+// Main test group
 describe("SaveToDB", () => {
+  // reset modules before each run
   beforeEach(() => {
     jest.resetModules();
   });
 
+  // Case 1: success
   it("success", async () => {
     const read = require("../ReadDataTimeline");
-    const mysql = require("mysql2");
-    const dut = require("../SaveToDB");
+    const mysql = require("mysql2/promise");
+    const logger = require("winston");
+    // Call DUT
+    require("../SaveToDB");
+    // the script does some async jobs. wait for it
     await jest.runAllTimersAsync();
+    // Should read once
     expect(read).toHaveBeenCalledTimes(1);
-    expect(mysql.createConnection).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.connect).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.query).toHaveBeenCalledTimes(2);
-    expect(mysql.conn.end).toHaveBeenCalledTimes(1);
+    // Should create 1 pool
+    expect(mysql.createPool).toHaveBeenCalledTimes(1);
+    // Should create 1 connection
+    expect(mysql.pool.getConnection).toHaveBeenCalledTimes(1);
+    // Should execute 1+2 queries
+    expect(mysql.pool.query).toHaveBeenCalledTimes(1+2);
+    // Should end the connection
+    expect(mysql.pool.end).toHaveBeenCalledTimes(1);
+    // Should not have any errors
+    expect(logger._error).toHaveBeenCalledTimes(0);
   });
 
+  // Case 2: connection failed
   it("connection failure", async () => {
     const read = require("../ReadDataTimeline");
-    const mysql = require("mysql2");
-    mysql.conn.connect.mockImplementation((callback) => {callback("connection failure");});
-    const dut = require("../SaveToDB");
+    const mysql = require("mysql2/promise");
+    const logger = require("winston");
+    // Modify mock connect to fail
+    mysql.pool.getConnection.mockImplementation(async () => {throw "connection failure";});
+    // Call DUT
+    require("../SaveToDB");
     await jest.runAllTimersAsync();
-    expect(read).toHaveBeenCalledTimes(1);
-    expect(mysql.createConnection).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.connect).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.query).toHaveBeenCalledTimes(0);
-    expect(mysql.conn.end).toHaveBeenCalledTimes(0);
+    // Should not read
+    expect(read).toHaveBeenCalledTimes(0);
+    // Should create 1 pool
+    expect(mysql.createPool).toHaveBeenCalledTimes(1);
+    // Should create 1 connection
+    expect(mysql.pool.getConnection).toHaveBeenCalledTimes(1);
+    // Should execute 0 queries
+    expect(mysql.pool.query).toHaveBeenCalledTimes(0);
+    // Should close the pool
+    expect(mysql.pool.end).toHaveBeenCalledTimes(1);
+    // Should report errors
+    expect(logger._error).toHaveBeenCalled();
   });
 
+  // Case 3: query failed
   test("Query failure", async () => {
     const read = require("../ReadDataTimeline");
-    const mysql = require("mysql2");
-    mysql.conn.query.mockImplementation((query, callback) => {callback("Query failure", undefined);});
-    const dut = require("../SaveToDB");
+    const mysql = require("mysql2/promise");
+    const logger = require("winston");
+    // Modify mock query to fail
+    mysql.pool.query.mockImplementation(async () => {throw "Query failure";});
+    // Call DUT
+    require("../SaveToDB");
     await jest.runAllTimersAsync();
-    expect(read).toHaveBeenCalledTimes(1);
-    expect(mysql.createConnection).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.connect).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.query).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.end).toHaveBeenCalledTimes(1);
+    // should not read
+    expect(read).toHaveBeenCalledTimes(0);
+    // Should create 1 pool
+    expect(mysql.createPool).toHaveBeenCalledTimes(1);
+    // Should create 1 connection
+    expect(mysql.pool.getConnection).toHaveBeenCalledTimes(1);
+    // Should execute 1 queries
+    expect(mysql.pool.query).toHaveBeenCalledTimes(1);
+    // Should close the pool
+    expect(mysql.pool.end).toHaveBeenCalledTimes(1);
+    // Should report errors
+    expect(logger._error).toHaveBeenCalled();
   });
 
-  test("End failure", async () => {
-    const read = require("../ReadDataTimeline");
-    const mysql = require("mysql2");
-    mysql.conn.end.mockImplementation((callback) => {callback("End failure");});
-    const dut = require("../SaveToDB");
-    await jest.runAllTimersAsync();
-    expect(read).toHaveBeenCalledTimes(1);
-    expect(mysql.createConnection).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.connect).toHaveBeenCalledTimes(1);
-    expect(mysql.conn.query).toHaveBeenCalledTimes(2);
-    expect(mysql.conn.end).toHaveBeenCalledTimes(1);
-  });
 });

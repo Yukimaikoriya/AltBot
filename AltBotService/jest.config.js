@@ -27,9 +27,10 @@ const config = {
   coverageDirectory: "coverage",
 
   // An array of regexp pattern strings used to skip coverage collection
-  // coveragePathIgnorePatterns: [
-  //   "\\\\node_modules\\\\"
-  // ],
+  coveragePathIgnorePatterns: [
+    "\\\\node_modules\\\\",
+    "\\\\test\\\\"
+  ],
 
   // Indicates which provider should be used to instrument code for coverage
   coverageProvider: "v8",
@@ -165,7 +166,7 @@ const config = {
   // ],
 
   // The regexp pattern or array of patterns that Jest uses to detect test files
-  testRegex: [`test/.+\.test\.js`],
+  testRegex: [`test/.+\\.test\\.js`],
 
   // This option allows the use of a custom results processor
   // testResultsProcessor: undefined,

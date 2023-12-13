@@ -1,0 +1,39 @@
+{
+    "name": "AltBot",
+    "version": "0.1.0",
+    "description": "Adds alt tag to images",
+    "icons": {
+        "16": "assets/logo.png",
+        "48": "assets/logo.png",
+        "128": "assets/logo.png"
+    },
+    "permissions": ["storage", "tabs"],
+    "host_permissions": ["https://*.mastodon.social/*", "https://*.pythonanywhere.com/*"],
+    "background": {
+      "service_worker": "background_svcWorker/background.js"
+    },
+    "content_scripts": [
+      {
+        "matches": ["https://*.mastodon.social/*"],
+        "js": ["foreground/contentScript.js"]
+      }
+    ],
+    "web_accessible_resources": [
+      {
+        "resources": [
+          "assets/logo.png"
+        ],
+        "matches": ["https://*.mastodon.social/*"]
+      }
+    ],
+    "action": {
+      "default_icon": {
+        "16": "assets/logo.png",
+        "24": "assets/logo.png",
+        "32": "assets/logo.png"
+      },
+      "default_title": "AltBot - Mastadon",
+      "default_popup": "popUp/popup.html"
+    },
+    "manifest_version": 3
+}
