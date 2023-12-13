@@ -24,7 +24,7 @@ jest.mock("mysql2/promise", () => {
   const pool = {
     getConnection: jest.fn(async () => {
       return {
-        release: release
+        release: release,
       };
     }),
     query: jest.fn(async (query) => {
@@ -43,17 +43,17 @@ jest.mock("mysql2/promise", () => {
 });
 
 // Mock ReadDataTimeline that returns fixed value `mock_img_list`
-jest.mock("../ReadDataTimeline", () => {
+jest.mock("../ReadTimeline/ReadDataTimeline", () => {
   return jest.fn(async () => {
     return mock_img_list;
   });
 });
 
 // Mock winston logger
-jest.mock('winston', () => require('./winston'));
+jest.mock("winston", () => require("./winston"));
 
 // mock dotenv
-jest.mock('dotenv');
+jest.mock("dotenv");
 
 // Main test group
 describe("SaveToDB", () => {
@@ -64,11 +64,11 @@ describe("SaveToDB", () => {
 
   // Case 1: success
   it("success", async () => {
-    const read = require("../ReadDataTimeline");
+    const read = require("../ReadTimeline/ReadDataTimeline");
     const mysql = require("mysql2/promise");
     const logger = require("winston");
     // Call DUT
-    require("../SaveToDB");
+    require("../ReadTimeline/SaveToDB");
     // the script does some async jobs. wait for it
     await jest.runAllTimersAsync();
     // Should read once
@@ -78,7 +78,7 @@ describe("SaveToDB", () => {
     // Should create 1 connection
     expect(mysql.pool.getConnection).toHaveBeenCalledTimes(1);
     // Should execute 1+2 queries
-    expect(mysql.pool.query).toHaveBeenCalledTimes(1+2);
+    expect(mysql.pool.query).toHaveBeenCalledTimes(1 + 2);
     // Should end the connection
     expect(mysql.pool.end).toHaveBeenCalledTimes(1);
     // Should not have any errors
@@ -87,13 +87,15 @@ describe("SaveToDB", () => {
 
   // Case 2: connection failed
   it("connection failure", async () => {
-    const read = require("../ReadDataTimeline");
+    const read = require("../ReadTimeline/ReadDataTimeline");
     const mysql = require("mysql2/promise");
     const logger = require("winston");
     // Modify mock connect to fail
-    mysql.pool.getConnection.mockImplementation(async () => {throw "connection failure";});
+    mysql.pool.getConnection.mockImplementation(async () => {
+      throw "connection failure";
+    });
     // Call DUT
-    require("../SaveToDB");
+    require("../ReadTimeline/SaveToDB");
     await jest.runAllTimersAsync();
     // Should not read
     expect(read).toHaveBeenCalledTimes(0);
@@ -111,13 +113,15 @@ describe("SaveToDB", () => {
 
   // Case 3: query failed
   test("Query failure", async () => {
-    const read = require("../ReadDataTimeline");
+    const read = require("../ReadTimeline/ReadDataTimeline");
     const mysql = require("mysql2/promise");
     const logger = require("winston");
     // Modify mock query to fail
-    mysql.pool.query.mockImplementation(async () => {throw "Query failure";});
+    mysql.pool.query.mockImplementation(async () => {
+      throw "Query failure";
+    });
     // Call DUT
-    require("../SaveToDB");
+    require("../ReadTimeline/SaveToDB");
     await jest.runAllTimersAsync();
     // should not read
     expect(read).toHaveBeenCalledTimes(0);
@@ -132,5 +136,4 @@ describe("SaveToDB", () => {
     // Should report errors
     expect(logger._error).toHaveBeenCalled();
   });
-
 });

@@ -1,8 +1,7 @@
 const fs = require("fs");
 const path = require("path");
 const ENV = require("dotenv");
-ENV.config();
-
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 /* global process */
 
 const folderPath = process.env.FOLDER_PATH;

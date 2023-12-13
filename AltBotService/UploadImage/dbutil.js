@@ -1,5 +1,6 @@
 const mysql = require("mysql2");
 const winston = require("winston");
+const path = require("path");
 const logger = winston.createLogger({
   level: "info",
   format: winston.format.combine(
@@ -12,7 +13,7 @@ const logger = winston.createLogger({
   ],
 });
 const ENV = require("dotenv");
-ENV.config();
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 
 /* global process */
 

@@ -27,7 +27,7 @@ const logger = winston.createLogger({
 logger.info("Image Bot Started");
 
 const ENV = require("dotenv");
-ENV.config();
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 
 /**
  * Initializes and configures the Mastodon API client.
@@ -111,10 +111,9 @@ fs.readdir(folderPath, async (err, files) => {
   logger.info(`Found ${files.length} files in the folder.`);
 
   // Process each image file concurrently
-  await Promise.all(files.map(processImage));
-
-  logger.info("Image processing completed.");
-
-  // Close the MySQL connection pool after all image processing is completed
-  closeConnection();
+  await Promise.all(files.map(processImage)).then(() => {
+    logger.info("Image processing completed.");
+    // Close the MySQL connection pool after all image processing is completed
+    closeConnection();
+  });
 });

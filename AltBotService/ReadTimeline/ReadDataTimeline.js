@@ -1,8 +1,8 @@
 const Mastodon = require("mastodon-api");
 const ENV = require("dotenv");
 const winston = require("winston");
-
-ENV.config();
+const path = require("path");
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 
 /* global process */
 
@@ -82,8 +82,8 @@ const getImageList = async () => {
 logger.info("Fetching image list from the home timeline...");
 
 getImageList()
-  .then((imageList) => {
-    logger.info("Image list fetched successfully:", imageList);
+  .then(() => {
+    logger.info("Image list fetched successfully:");
   })
   .catch((error) => {
     logger.error("Error fetching image list:", error);
