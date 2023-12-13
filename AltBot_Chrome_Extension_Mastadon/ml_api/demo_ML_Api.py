@@ -1,8 +1,8 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import requests
-import json
 import time
 from flask_cors import CORS
+from flask_httpauth import HTTPBasicAuth
 import pickle
 import os
 
@@ -43,7 +43,7 @@ def handle_request():
             return jsonify(result)
     except Exception as e:
         return jsonify({'error': f'Error processing: {str(e)}'}), 400
-    
+
     API_TOKEN = "Insert_Token_Here"
     model = 'nlpconnect/vit-gpt2-image-captioning'
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
@@ -57,19 +57,20 @@ def handle_request():
         )
         response.raise_for_status()
     except Exception as e:
-        return jsonify({'error': f'Error getting response from endpoint: {str(e)}'}), 500
-    
+        err = f'Error getting response from endpoint: {str(e)}'
+        return jsonify({'error': err}), 500
+
     try:
         alt_text = response.json()[0]['generated_text']
     except Exception as e:
         return jsonify({'error': f'Error subtracting text: {str(e)}'}), 500
-    
+
     result = {'text': alt_text, 'timestamp': time.time()}
     cache_dict[url] = alt_text
 
     with open(pickle_filename, 'wb') as file:
         pickle.dump(cache_dict, file)
-        
+
     return jsonify(result)
 
 
