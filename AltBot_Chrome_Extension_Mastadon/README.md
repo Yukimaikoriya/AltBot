@@ -7,13 +7,19 @@ We created a AltBot Chrome Extension using Manifest V3 specially for the website
 ## Install Instruction
 
 1. On chrome://extensions/, enable the developer mode.
-2. Click `Load unpacked` and upload the extension foler.
+2. Click `Load unpacked` and select this extension foler.
 
    <img width="832" alt="image" src="https://github.com/CSE210-Fall23-Team2/AltBot/assets/78366188/95f490ea-cab5-4e8d-afe3-58af16b43580">
 
 3. Enable the extension and navigate to the Mastodon.social website. Upon doing so, you can check if the extension is installed properly by clicking on the extension's logo. A popup window will appear, indicating that our bot is currently running.
 
    <img width="505" alt="image" src="docs/ExtensionRunning.png">
+
+## Demo
+
+Once running, our bot will automatically detect images and add alt tags to the code if it's not already present.\
+Example:
+    <img width="auto" alt="image" src="docs/demo.png">
 
 ---
 
