@@ -10,7 +10,7 @@ CORS(app)
 @app.route('/', methods = ['GET', 'POST'])
 def handle_request():
     url = str(request.args.get('input'))
-    API_TOKEN = ""
+    API_TOKEN = "Insert_Token_Here"
     model = 'nlpconnect/vit-gpt2-image-captioning'
     headers = {"Authorization": f"Bearer {API_TOKEN}"}
 
