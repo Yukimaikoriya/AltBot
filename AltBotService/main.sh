@@ -1,4 +1,4 @@
-node SaveToDB.js
-node DownloadImages.js
-node UploadImage.js
-node Delete.js
+node ./ReadTimeline/SaveToDB.js
+node ./DownloadImages/DownloadImages.js
+node ./UploadImage/UploadImage.js
+node ./DeleteOutputImages/Delete.js

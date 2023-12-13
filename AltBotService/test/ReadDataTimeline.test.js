@@ -11,43 +11,42 @@
 const mock_ret_val = {
   data: [
     {
-      account: { id: 'user-id1' },
+      account: { id: "user-id1" },
       media_attachments: [
         {
           description: null,
-          url: 'test-url1',
-          id: 'test-id1'
+          url: "test-url1",
+          id: "test-id1",
         },
         {
-          description: 'something',
-          url: 'test-url2',
-          id: 'test-id2'
-        }
+          description: "something",
+          url: "test-url2",
+          id: "test-id2",
+        },
       ],
     },
     {
-      account: { id: 'user-id2' },
+      account: { id: "user-id2" },
       media_attachments: [
         {
           description: null,
-          url: 'test-url3',
-          id: 'test-id3'
-        }
-      ]
+          url: "test-url3",
+          id: "test-id3",
+        },
+      ],
     },
     {
-      account: { id: 'user-id3' },
-      media_attachments: []
-    }
+      account: { id: "user-id3" },
+      media_attachments: [],
+    },
   ],
 };
 
-
 // Expected result pattern
 const matcher = {
-    imageUrl: expect.stringMatching(/test-url(1|3)/),
-    imageId: expect.stringMatching(/test-id(1|3)/)
-}
+  imageUrl: expect.stringMatching(/test-url(1|3)/),
+  imageId: expect.stringMatching(/test-id(1|3)/),
+};
 
 // Mock mastodon-api that returns `mock_ret_val` for `GET timelines/home`
 jest.mock("mastodon-api", () => {
@@ -69,22 +68,22 @@ jest.mock("mastodon-api", () => {
 });
 
 // Mock winston logger
-jest.mock("winston", () => require('./winston'));
+jest.mock("winston", () => require("./winston"));
 
 // Mock dotenv
 jest.mock("dotenv");
 
 // Main test
-test('ReadDataTimeline', async () => {
-    const m = require('mastodon-api');
-    const dut = require('../ReadDataTimeline');
-    // Call DUT
-    const ret = await dut();
-    // should return 1 & 3
-    expect(ret).toHaveLength(2);
-    expect(ret[0]).toMatchObject(matcher);
-    expect(ret[1]).toMatchObject(matcher);
-    // should construct a Mastodon object and call `get`
-    expect(m.con).toHaveBeenCalled();
-    expect(m.get).toHaveBeenCalled();
+test("ReadDataTimeline", async () => {
+  const m = require("mastodon-api");
+  const dut = require("../ReadTimeline/ReadDataTimeline");
+  // Call DUT
+  const ret = await dut();
+  // should return 1 & 3
+  expect(ret).toHaveLength(2);
+  expect(ret[0]).toMatchObject(matcher);
+  expect(ret[1]).toMatchObject(matcher);
+  // should construct a Mastodon object and call `get`
+  expect(m.con).toHaveBeenCalled();
+  expect(m.get).toHaveBeenCalled();
 });
