@@ -1,10 +1,11 @@
 const getImageList = require("./ReadDataTimeline");
 const mysql = require("mysql2/promise");
-const ENV = require("dotenv");
+const path = require("path");
 const winston = require("winston");
 const { format } = winston;
 
-ENV.config();
+const ENV = require("dotenv");
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 
 /* global process */
 

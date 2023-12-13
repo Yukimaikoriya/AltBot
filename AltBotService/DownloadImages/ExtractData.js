@@ -2,8 +2,8 @@ const mysql = require("mysql2");
 const util = require("util");
 const ENV = require("dotenv");
 const winston = require("winston");
-
-ENV.config();
+const path = require("path");
+ENV.config({ path: path.resolve(__dirname, "../.env") });
 
 /* global process */
 
@@ -67,7 +67,6 @@ async function getDataFromDatabase() {
   try {
     const sql = "SELECT * FROM Images WHERE FLAG=0";
     const result = await query(sql);
-    logger.info("Data Read:", result);
     con.end();
     return result;
   } catch (error) {
