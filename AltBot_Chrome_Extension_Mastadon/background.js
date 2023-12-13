@@ -1,6 +1,6 @@
 chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     console.log("background.js start");
-    if (tab.url && tab.url.includes("mastodon.social/home")) {
+    if (tab.url && tab.url.includes("mastodon.social")) {
         console.log("In Home Tab");
         
         console.log("Sending NEW to content Script");

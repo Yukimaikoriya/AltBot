@@ -19,42 +19,53 @@
 
     });
 
-    function delay(ms) {
-        return new Promise(resolve => setTimeout(resolve, ms));
-    }
-
-    async function TMPgenerateAltTag() 
+    
+    // Uses hosted api to generate AltTag
+    async function generateAltTag(imageUrl) 
     {
-        // Your logic to generate alt tag
-        console.log("altTagGenerated");
-
-        tmpCntr += 1;
-        console.error(tmpCntr);
-
-        return getCurrentTime();
-    }
-
-    async function generateAltTag(imageUrl) {
         const BASE_URL = 'https://yuuu.pythonanywhere.com/';
       
         const url = new URL(BASE_URL);
         tmpCntr += 1;
         url.searchParams.append('input', imageUrl);
       
-        try {
-          const response = await fetch(url);
-          if (!response.ok) {
-            console.errpr("HTTP error! Status: ",response.status);
-          }
-          const data = await response.json();
-          return data['text'];
-        } catch (error) {
-          console.error('Error:', error.message);
+        try 
+        {
+            const response = await fetch(url);
+            if (!response.ok) 
+            {
+                console.error("HTTP error! Status: ",response.status);
+            }
+            const data = await response.json();
+            return data['text'];
+        } catch (error) 
+        {
+            console.error('Error:', error.message);
             //   throw error;
             return "Error Generating AltTag";
         
         }
-      }
+    }
+
+    // async function generateAltTag(imageUrl) 
+    // {
+    //     return "TMPPPAltText" + getCurrentTime();
+    // }
+
+    
+    // function getCurrentTime()
+    // {
+    //     // Create a new Date object
+    //     var currentDate = new Date();
+
+    //     // Get the current time
+    //     var currentTime = currentDate.toLocaleTimeString();
+
+    //     // Display the current time
+    //     // console.log("Current time: " + currentTime);
+    //     return currentTime;
+
+    // }
 
     function populateAltTitleTags(images, altTag) 
     {
@@ -133,7 +144,8 @@
                 console.log("imgId found locally", imgId);
                 console.log(localIdDictionary);
                 flag = 0;
-                altTag = localIdDictionary[imgId] + " Came from local storage " + tmpCntr;
+                // altTag = localIdDictionary[imgId] + " Came from local storage " + tmpCntr;
+                altTag = localIdDictionary[imgId]
                 resolve({
                     flag: flag,
                     altTag: altTag,
@@ -144,14 +156,16 @@
                         console.log("imgId found in chrome storage", imgId);
                         console.log(localIdDictionary);
                         flag = 1;
-                        altTag = JSON.parse(result[imgId]) + " Came from chrome.local storage";
+                        altTag = JSON.parse(result[imgId]);
                     } else {
                         console.log("Image Id found nowhere ", imgId);
-                        if (localIdDictionary[imgId] !== undefined)
+                        if (localIdDictionary[imgId] !== undefined) // Checking again due to domObserver 
+                                                                    // calling handleMutations multiple
+                                                                    // times parallelly
                         {
                             console.log("But found in Local now");
                             flag = 0;
-                            altTag = localIdDictionary[imgId] + " Came from local storage " + tmpCntr;
+                            altTag = localIdDictionary[imgId] + " (local backup)"
                         }
                         else
                         {
@@ -250,21 +264,6 @@
         var config = { childList: true, subtree: true, attributes: true };
         observer.observe(targetNode, config);
     }
-
-    function getCurrentTime()
-    {
-        // Create a new Date object
-        var currentDate = new Date();
-
-        // Get the current time
-        var currentTime = currentDate.toLocaleTimeString();
-
-        // Display the current time
-        // console.log("Current time: " + currentTime);
-        return currentTime;
-
-    }
-    
 
     // startDomObserver();
 })();
