@@ -58,8 +58,8 @@ const getImageList = async () => {
     const resp = await M.get("timelines/home", {});
     if (resp.data.length !== 0) {
       for (const toot of resp.data) {
-        post_id = toot["id"];
-        user_id = toot.account["id"];
+        let post_id = toot["id"];
+        let user_id = toot.account["id"];
         if (toot.media_attachments.length !== 0) {
           toot.media_attachments.forEach((val) => {
             if (val.description === null) {
