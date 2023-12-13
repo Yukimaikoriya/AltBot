@@ -11,8 +11,11 @@
 
 - ALTTagMLService  (Web GUI for AltBot)
   - templates
+  - docs
     -  index.html
+    -  READMEA.md
   - app.py
+  - requirements.txt
 
 - AltBotService (Mastadon Bot)
   - Images
@@ -35,6 +38,15 @@
   - main.sh
   - package-lock.json
   - package.json
+- AltBot_Chrome_Extension_Mastadon
+  - assets
+  - ml_api
+      - README.md
+      - background.js
+      - contentScript.js
+      - manifest.json
+      - popup.css
+      - popup.js
 - Experiment (Standalone Prototypes/Experiementations)
   - ML_Model.py
   - Run_ML_Model.js
